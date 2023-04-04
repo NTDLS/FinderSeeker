@@ -3,6 +3,7 @@ using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Numerics;
 using System.Reflection;
 using System.Text.Json;
@@ -54,6 +55,7 @@ namespace FinderSeeker
         private bool patternCaseSensitive = false;
         private bool containsTextCaseSensitive = false;
         private readonly ListViewColumnSorterExt fileSorter;
+        private readonly ImageList imageList = new();
 
         public FormMain()
         {
@@ -63,6 +65,16 @@ namespace FinderSeeker
 
             listViewResults.DoubleBuffering(true); //after the InitializeComponent();
             listViewResults.ColumnClick += ListViewResults_ColumnClick;
+
+
+            imageList = new ImageList()
+            {
+                ColorDepth = ColorDepth.Depth32Bit
+            };
+
+            listViewResults.SmallImageList = imageList;
+            listViewResults.LargeImageList = imageList;
+
             splitContainerVert.SizeChanged += SplitContainerVert_SizeChanged;
             splitContainerVert.SplitterMoving += SplitContainerVert_SplitterMoving;
             splitContainerVert.SplitterMoved += SplitContainerVert_SplitterMoved;
@@ -83,7 +95,6 @@ namespace FinderSeeker
             if (patternCaseSensitive)
                 buttonPatternCaseSensitive.Image = Resources.CaseSensitiveSelected;
             else buttonPatternCaseSensitive.Image = Resources.CaseSensitiveNotSelected;
-
 
             if (containsTextCaseSensitive)
                 buttonContainsTextCaseSensitive.Image = Resources.CaseSensitiveSelected;
@@ -379,14 +390,14 @@ namespace FinderSeeker
 
             if (searchOptions.PatternCaseSensitive)
             {
-                var fileExtensions = searchOptions.SearchPatterns.Where(o => o.StartsWith("*.")).Select(o => o.Trim(new char[] { '*' }).Trim());
-                if ((includeFile && fileExtensions.Contains(Path.GetExtension(fileInfo.Name))) == false)
+                var fileExtensions = searchOptions.SearchPatterns.Where(o => o.StartsWith("*.")).Select(o => o.TrimStart(new char[] { '*' }).Trim());
+                if ((includeFile && (fileExtensions.Contains(Path.GetExtension(fileInfo.Name)) || fileExtensions.Contains(".*"))) == false)
                     includeFile = false;
             }
             else
             {
-                var fileExtensions = searchOptions.SearchPatterns.Where(o => o.StartsWith("*.")).Select(o => o.Trim(new char[] { '*' }).Trim().ToLowerInvariant());
-                if ((includeFile && fileExtensions.Contains(Path.GetExtension(fileInfo.Name).ToLowerInvariant())) == false)
+                var fileExtensions = searchOptions.SearchPatterns.Where(o => o.StartsWith("*.")).Select(o => o.TrimStart(new char[] { '*' }).Trim().ToLowerInvariant());
+                if ((includeFile && (fileExtensions.Contains(Path.GetExtension(fileInfo.Name).ToLowerInvariant()) || fileExtensions.Contains(".*"))) == false)
                     includeFile = false;
             }
 
@@ -439,6 +450,27 @@ namespace FinderSeeker
             }
             else
             {
+                var extension = Path.GetExtension(fileInfo.Name.ToLowerInvariant());
+                Image? image = null;
+
+                if (imageList.Images.ContainsKey(extension))
+                {
+                    image = imageList.Images[extension];
+                }
+                else
+                {
+                    image = Icon.ExtractAssociatedIcon(fileInfo.FullName)?.ToBitmap();
+                    if (image != null)
+                    {
+                        imageList.Images.Add(extension, image);
+                    }
+                }
+
+                if (image != null)
+                {
+                    listViewItem.ImageKey = extension;
+                }
+
                 listViewResults.Items.Add(listViewItem);
             }
         }
