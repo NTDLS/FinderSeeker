@@ -1,13 +1,6 @@
 using FinderSeeker.Properties;
-using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Numerics;
-using System.Reflection;
-using System.Text.Json;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace FinderSeeker
 {
