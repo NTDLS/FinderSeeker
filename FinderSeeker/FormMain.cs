@@ -22,6 +22,8 @@ namespace FinderSeeker
             public int DirCount { get; set; }
             public int FoundCount { get; set; }
             public List<FileInfo> FoundItems { get; set; } = new();
+            public List<string> FileExtensions { get; set; } = new();
+            public List<string> FileNames { get; set; } = new();
         }
 
         private class SearchOptions
@@ -176,7 +178,7 @@ namespace FinderSeeker
             var options = JsonConvert.DeserializeObject<SearchOptions>(searchOptionsText) ?? new SearchOptions();
 
             comboBoxLocation.Text = options.SearchLocation;
-            comboBoxPattern.Text = String.Join("; ", options.SearchPatterns);
+            comboBoxPattern.Text = String.Join(";", options.SearchPatterns);
             comboBoxSize.Text = options.SizeIdentifier;
 
             comboBoxContainsText.Text = options.ContainsText;
@@ -252,6 +254,20 @@ namespace FinderSeeker
             }
         }
 
+        private void LoadSearchState()
+        {
+            searchState = new();
+
+            searchState.FileExtensions = searchOptions.SearchPatterns.Where(o => o.StartsWith("*.")).Select(o => o.TrimStart(new char[] { '*' }).Trim()).ToList();
+            searchState.FileNames = searchOptions.SearchPatterns.Where(o => o.StartsWith("*.") == false).Select(o => o.Trim()).ToList();
+
+            if (searchOptions.PatternCaseSensitive == false)
+            {
+                searchState.FileExtensions = searchState.FileExtensions.ConvertAll(o => o.ToLowerInvariant());
+                searchState.FileNames = searchState.FileNames.ConvertAll(o => o.ToLowerInvariant());
+            }
+        }
+
         private void ListViewResults_ColumnClick(object? sender, ColumnClickEventArgs e)
         {
             //Add sort images to ListView column header.
@@ -315,6 +331,7 @@ namespace FinderSeeker
 
                 LoadSearchOptionsFromForm();
                 SaveSearchSettings();
+                LoadSearchState();
 
                 new Thread(ProcessDirectoryThread).Start();
 
@@ -387,18 +404,35 @@ namespace FinderSeeker
             searchState.FileCount++;
 
             bool includeFile = true;
+            string casesFileName = fileInfo.Name;
 
-            if (searchOptions.PatternCaseSensitive)
+            if (searchOptions.PatternCaseSensitive == false)
             {
-                var fileExtensions = searchOptions.SearchPatterns.Where(o => o.StartsWith("*.")).Select(o => o.TrimStart(new char[] { '*' }).Trim());
-                if ((includeFile && (fileExtensions.Contains(Path.GetExtension(fileInfo.Name)) || fileExtensions.Contains(".*"))) == false)
-                    includeFile = false;
+                casesFileName = casesFileName.ToLowerInvariant();
             }
-            else
+
+            if (includeFile && searchState.FileExtensions.Any())
             {
-                var fileExtensions = searchOptions.SearchPatterns.Where(o => o.StartsWith("*.")).Select(o => o.TrimStart(new char[] { '*' }).Trim().ToLowerInvariant());
-                if ((includeFile && (fileExtensions.Contains(Path.GetExtension(fileInfo.Name).ToLowerInvariant()) || fileExtensions.Contains(".*"))) == false)
+                if ((includeFile && (searchState.FileExtensions.Contains(Path.GetExtension(casesFileName).ToLowerInvariant()) || searchState.FileExtensions.Contains(".*"))) == false)
+                {
                     includeFile = false;
+                }
+            }
+
+            if (includeFile && searchState.FileNames.Any())
+            {
+                bool found = false;
+
+                foreach (var fileName in searchState.FileNames)
+                {
+                    if (casesFileName.Contains(fileName))
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+
+                includeFile = found;
             }
 
             if (includeFile && searchOptions.UseModifiedByAfter)
