@@ -6,3 +6,5 @@ FinderSeeker/obj/
 *.user
 
 .vs/
+
+Installer/Output/
