@@ -51,7 +51,7 @@ namespace LocalizerScan
             var translationDatabase = Path.Join(rootPath, "FinderSeeker", "Translations", "Translations.db");
             var concurrency = args.Length > 1 && int.TryParse(args[1], out var requested) && requested > 0 ? requested : DefaultConcurrency;
 
-            EnsureLanguageColumns(translationDatabase);
+            EnsureDatabase(translationDatabase);
             ScanSourceFilesAndAddMissingKeys(rootPath, translationDatabase);
             ClearInvalidTranslations(translationDatabase);
             await FillInMissingTranslations(translationDatabase, einkr, escalationEinkr, "English", concurrency);
@@ -60,14 +60,22 @@ namespace LocalizerScan
         }
 
         /// <summary>
-        /// Each language is a column named by its culture code ("de", "zh-Hans"). A column that still has the older language name
-        /// ("German", "Chinese simplified") is renamed, and a language with no column yet gets one.
+        /// Makes sure the translation database exists and has the current schema: it is created if it is missing, and an older one
+        /// is brought up to date. Each language is a column named by its culture code ("de", "zh-Hans"); a column that still has the
+        /// older language name ("German", "Chinese simplified") is renamed, and a language with no column yet gets one.
+        /// Every row records when it was last changed (UTC), kept up to date by triggers so that edits made in any tool count.
         /// </summary>
-        private static void EnsureLanguageColumns(string translationDatabase)
+        private static void EnsureDatabase(string translationDatabase)
         {
             if (!File.Exists(translationDatabase))
             {
-                return;
+                Directory.CreateDirectory(Path.GetDirectoryName(translationDatabase)!);
+
+                var languages = string.Concat(_supportedCultures.Collection.Where(o => o.Code != "en").Select(o => $"\"{o.Code}\" TEXT, "));
+
+                using var created = new SqliteManagedInstance(translationDatabase);
+                created.Execute($"CREATE TABLE IF NOT EXISTS \"Translation\" (\"TranslationId\" INTEGER PRIMARY KEY AUTOINCREMENT, \"Phrase\" TEXT NOT NULL UNIQUE COLLATE NOCASE, {languages}\"LastModified\" TEXT)");
+                Console.WriteLine($"Created the translation database: {translationDatabase}");
             }
 
             using var translationDb = new SqliteManagedInstance(translationDatabase);
@@ -108,6 +116,30 @@ namespace LocalizerScan
                     Console.WriteLine($"Added the column \"{culture.Code}\" ({culture.Name}).");
                 }
             }
+
+            //When a row was last changed (UTC, "yyyy-MM-dd HH:mm:ss"). Rows from before this column get the time of this run.
+            if (!columns.Contains("LastModified"))
+            {
+                translationDb.Execute("ALTER TABLE Translation ADD COLUMN \"LastModified\" TEXT");
+                Console.WriteLine("Added the column \"LastModified\".");
+            }
+            translationDb.Execute("UPDATE Translation SET LastModified = strftime('%Y-%m-%d %H:%M:%S', 'now') WHERE LastModified IS NULL");
+
+            //The triggers keep it current for any change, from this tool or any other: a changed row gets the time unless the change set it itself.
+            translationDb.Execute("""
+                CREATE TRIGGER IF NOT EXISTS Translation_SetLastModified AFTER INSERT ON Translation
+                FOR EACH ROW WHEN NEW.LastModified IS NULL
+                BEGIN
+                    UPDATE Translation SET LastModified = strftime('%Y-%m-%d %H:%M:%S', 'now') WHERE TranslationId = NEW.TranslationId;
+                END
+                """);
+            translationDb.Execute("""
+                CREATE TRIGGER IF NOT EXISTS Translation_UpdateLastModified AFTER UPDATE ON Translation
+                FOR EACH ROW WHEN NEW.LastModified IS OLD.LastModified
+                BEGIN
+                    UPDATE Translation SET LastModified = strftime('%Y-%m-%d %H:%M:%S', 'now') WHERE TranslationId = NEW.TranslationId;
+                END
+                """);
         }
 
         /// <summary>
