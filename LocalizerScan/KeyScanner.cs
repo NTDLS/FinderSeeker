@@ -75,7 +75,7 @@ namespace LocalizerScan
         }
 
         /// <summary>
-        /// The folders that are never scanned: build output, tools, tests (their phrases are made up) and reference copies.
+        /// The folders that are never scanned: build output, tools, tests, including projects named *.Tests (their phrases are made up) and reference copies.
         /// </summary>
         private static readonly string[] _ignoredFolders = ["bin", "obj", ".git", ".vs", "packages", "Tests", "LocalizerScan", "Translations", "publish"];
 
@@ -208,7 +208,7 @@ namespace LocalizerScan
                 .Where(file => !Path.GetRelativePath(root, file)
                     .Split(Path.DirectorySeparatorChar)
                     .SkipLast(1) //The file name itself is not a folder.
-                    .Any(folder => _ignoredFolders.Contains(folder, StringComparer.OrdinalIgnoreCase)));
+                    .Any(folder => _ignoredFolders.Contains(folder, StringComparer.OrdinalIgnoreCase) || folder.EndsWith(".Tests", StringComparison.OrdinalIgnoreCase)));
         }
 
         /// <summary>
