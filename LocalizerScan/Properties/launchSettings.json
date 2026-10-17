@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "LocalizerScan": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\VPT\\SQLScriptGenerator\" 8"
+    }
+  }
+}

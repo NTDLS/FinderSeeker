@@ -1,7 +1,5 @@
-
-FinderSeeker/bin/
-
-FinderSeeker/obj/
+bin/
+obj/
 
 *.user
 

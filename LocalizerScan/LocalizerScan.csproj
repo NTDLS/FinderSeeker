@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="EmbeddedText\SystemPrompt.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NTDLS.SqliteDapperWrapper" Version="1.4.5" />
+    <PackageReference Include="VPT.Einkr.Client" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\FinderSeeker\Localization\SupportedCultures.cs" Link="Shared\SupportedCultures.cs" />
+    <Compile Include="..\FinderSeeker\Localization\Phrases.cs" Link="Shared\Phrases.cs" />
+  </ItemGroup>
+
+</Project>
