@@ -53,11 +53,6 @@ namespace FinderSeeker.UI
                 (MatchMode.PlainText, () => Localize("Plain text")),
                 (MatchMode.Wildcard, () => Localize("Wildcards")),
                 (MatchMode.Regex, () => Localize("Regular expression")));
-            FillChoices(comboCategory, Enum.GetValues<FileCategory>().Select(c => (c, (Func<string>)(() => FileCategories.DisplayName(c)))).ToArray());
-            FillChoices(comboKinds,
-                (ItemKinds.Files, () => Localize("Files")),
-                (ItemKinds.Folders, () => Localize("Folders")),
-                (ItemKinds.FilesAndFolders, () => Localize("Files and folders")));
             foreach (var unit in new[] { comboMinUnit, comboMaxUnit })
             {
                 FillChoices(unit,
@@ -149,10 +144,8 @@ namespace FinderSeeker.UI
             toolTip.SetToolTip(comboContentMode, Localize("How the text inside files is matched. Wildcard and regular expression patterns are matched within a single line."));
             toolTip.SetToolTip(checkNameCase, Localize("Match case"));
             toolTip.SetToolTip(checkContentCase, Localize("Match case"));
-            toolTip.SetToolTip(textExclude, Localize("Names to leave out, separated by semicolons. Excluded folders are not searched."));
             toolTip.SetToolTip(numMaxContentMb, Localize("Files larger than this many megabytes are not searched for text. Zero means no limit."));
             toolTip.SetToolTip(comboLocation, Localize("Folders or drives to search, separated by semicolons."));
-            toolTip.SetToolTip(checkFullPath, Localize("Match the name pattern against the whole path rather than only the file name."));
             toolTip.SetToolTip(checkBinary, Localize("Also look inside files that do not look like text. They are read as single-byte text."));
 
             UpdateColumnHeaders();
@@ -232,10 +225,6 @@ namespace FinderSeeker.UI
             comboName.Text = s.Name;
             Pick(comboNameMode, s.NameMode);
             checkNameCase.Checked = s.NameCaseSensitive;
-            checkFullPath.Checked = s.NameMatchesFullPath;
-            textExclude.Text = s.Exclude;
-            Pick(comboCategory, s.Category);
-            Pick(comboKinds, s.Kinds);
             checkHidden.Checked = s.IncludeHidden;
             checkSystem.Checked = s.IncludeSystem;
 
@@ -304,10 +293,6 @@ namespace FinderSeeker.UI
             s.Name = comboName.Text;
             s.NameMode = ValueOf<MatchMode>(comboNameMode);
             s.NameCaseSensitive = checkNameCase.Checked;
-            s.NameMatchesFullPath = checkFullPath.Checked;
-            s.Exclude = textExclude.Text;
-            s.Category = ValueOf<FileCategory>(comboCategory);
-            s.Kinds = ValueOf<ItemKinds>(comboKinds);
             s.IncludeHidden = checkHidden.Checked;
             s.IncludeSystem = checkSystem.Checked;
 
@@ -417,13 +402,9 @@ namespace FinderSeeker.UI
             {
                 Locations = locations,
                 IncludeSubfolders = checkSubfolders.Checked,
-                Kinds = ValueOf<ItemKinds>(comboKinds),
                 NamePattern = comboName.Text.Trim(),
                 NameMode = ValueOf<MatchMode>(comboNameMode),
                 NameCaseSensitive = checkNameCase.Checked,
-                NameMatchesFullPath = checkFullPath.Checked,
-                Exclude = textExclude.Text.Trim(),
-                Category = ValueOf<FileCategory>(comboCategory),
                 MinSize = checkUseMin.Checked ? Bytes(numMin.Value, ValueOf<int>(comboMinUnit)) : null,
                 MaxSize = checkUseMax.Checked ? Bytes(numMax.Value, ValueOf<int>(comboMaxUnit)) : null,
                 ModifiedAfter = GetDate(dateModifiedAfter),
@@ -585,9 +566,9 @@ namespace FinderSeeker.UI
         {
             var r = _results[e.ItemIndex];
 
-            var item = new ListViewItem(r.Name, _icons.IndexFor(r.Name, r.IsDirectory));
+            var item = new ListViewItem(r.Name, _icons.IndexFor(r.Name));
             item.SubItems.Add(r.Folder);
-            item.SubItems.Add(r.IsDirectory ? string.Empty : Format.FileSize(r.Length));
+            item.SubItems.Add(Format.FileSize(r.Length));
             item.SubItems.Add(r.Modified.ToString("yyyy-MM-dd HH:mm"));
             item.SubItems.Add(r.Created.ToString("yyyy-MM-dd HH:mm"));
             item.SubItems.Add(r.Line > 0 ? $"{r.Line}: {r.Snippet}" : string.Empty);

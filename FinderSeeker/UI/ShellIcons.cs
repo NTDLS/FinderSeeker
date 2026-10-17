@@ -11,7 +11,6 @@ namespace FinderSeeker.UI
         private const uint SHGFI_SMALLICON = 0x1;
         private const uint SHGFI_USEFILEATTRIBUTES = 0x10;
         private const uint FILE_ATTRIBUTE_NORMAL = 0x80;
-        private const uint FILE_ATTRIBUTE_DIRECTORY = 0x10;
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         private struct SHFILEINFO
@@ -29,8 +28,6 @@ namespace FinderSeeker.UI
         [DllImport("user32.dll")]
         private static extern bool DestroyIcon(IntPtr icon);
 
-        private const string FolderKey = "\0folder";
-
         public ImageList Images { get; } = new() { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(16, 16) };
 
         private readonly Dictionary<string, int> _index = new(StringComparer.OrdinalIgnoreCase);
@@ -38,26 +35,24 @@ namespace FinderSeeker.UI
         /// <summary>
         /// The position in <see cref="Images"/> of the icon for a file or folder.
         /// </summary>
-        public int IndexFor(string name, bool isDirectory)
+        public int IndexFor(string name)
         {
-            var key = isDirectory ? FolderKey : Path.GetExtension(name);
+            var key = Path.GetExtension(name);
 
             if (_index.TryGetValue(key, out var index))
             {
                 return index;
             }
 
-            index = Load(isDirectory ? "folder" : key.Length == 0 ? "file" : "file" + key, isDirectory);
+            index = Load("file" + key);
             _index[key] = index;
             return index;
         }
 
-        private int Load(string fakeName, bool isDirectory)
+        private int Load(string fakeName)
         {
             var info = new SHFILEINFO();
-            var attributes = isDirectory ? FILE_ATTRIBUTE_DIRECTORY : FILE_ATTRIBUTE_NORMAL;
-
-            SHGetFileInfo(fakeName, attributes, ref info, (uint)Marshal.SizeOf<SHFILEINFO>(),
+                        SHGetFileInfo(fakeName, FILE_ATTRIBUTE_NORMAL, ref info, (uint)Marshal.SizeOf<SHFILEINFO>(),
                 SHGFI_ICON | SHGFI_SMALLICON | SHGFI_USEFILEATTRIBUTES);
 
             if (info.hIcon == IntPtr.Zero)

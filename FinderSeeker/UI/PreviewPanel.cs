@@ -5,7 +5,7 @@ namespace FinderSeeker.UI
 {
     /// <summary>
     /// Shows what is in the selected result: images as pictures, text as text (with the content search's matches highlighted),
-    /// anything else as a hex dump of its beginning, and folders as a count of what is inside.
+    /// anything else as a hex dump of its beginning, .
     /// </summary>
     public sealed class PreviewPanel : Panel
     {
@@ -96,16 +96,6 @@ namespace FinderSeeker.UI
 
             try
             {
-                if (result.IsDirectory)
-                {
-                    var summary = await Task.Run(() => Summarize(result.FullPath, token), token);
-                    if (version == _version)
-                    {
-                        ShowMessage(summary);
-                    }
-                    return;
-                }
-
                 var path = result.FullPath;
                 var extension = Path.GetExtension(result.Name);
 
@@ -172,7 +162,7 @@ namespace FinderSeeker.UI
 
         private string DescribeHeader(SearchResult result, string? note)
         {
-            var size = result.IsDirectory ? string.Empty : Format.FileSize(result.Length) + "   ";
+            var size = Format.FileSize(result.Length) + "   ";
             var text = $"{result.Name}\r\n{size}{result.Modified:yyyy-MM-dd HH:mm}";
             return note == null ? text : text + "   " + note;
         }
@@ -264,30 +254,6 @@ namespace FinderSeeker.UI
             }
 
             return total == length ? bytes : bytes[..total];
-        }
-
-        private static string Summarize(string path, CancellationToken token)
-        {
-            int folders = 0, files = 0;
-            foreach (var entry in new DirectoryInfo(path).EnumerateFileSystemInfos("*", new EnumerationOptions { IgnoreInaccessible = true }))
-            {
-                token.ThrowIfCancellationRequested();
-                if ((entry.Attributes & FileAttributes.Directory) != 0)
-                {
-                    folders++;
-                }
-                else
-                {
-                    files++;
-                }
-
-                if (folders + files >= 100000)
-                {
-                    break;
-                }
-            }
-
-            return Localize("{0} folders, {1} files", folders.ToString("N0"), files.ToString("N0"));
         }
 
         private static bool LooksLikeText(byte[] bytes, out Encoding encoding)

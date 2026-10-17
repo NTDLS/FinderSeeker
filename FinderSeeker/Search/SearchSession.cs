@@ -6,13 +6,12 @@ using System.Threading.Channels;
 namespace FinderSeeker.Search
 {
     /// <summary>
-    /// One file or folder that was found.
+    /// One file that was found.
     /// </summary>
     public sealed class SearchResult
     {
         public required string Name { get; init; }
         public required string Folder { get; init; }
-        public required bool IsDirectory { get; init; }
         public long Length { get; init; }
         public DateTime Modified { get; init; }
         public DateTime Created { get; init; }
@@ -40,11 +39,7 @@ namespace FinderSeeker.Search
         private readonly Stopwatch _stopwatch = new();
 
         private readonly NameMatcher? _name;
-        private readonly NameMatcher? _exclude;
         private readonly ContentMatcher? _content;
-        private readonly HashSet<string>? _extensions;
-        private readonly bool _wantFiles;
-        private readonly bool _wantFolders;
         private readonly bool _recurse;
         private readonly long _modifiedAfter, _modifiedBefore, _createdAfter, _createdBefore;
         private readonly long _minSize, _maxSize;
@@ -70,8 +65,6 @@ namespace FinderSeeker.Search
                 throw new ArgumentException(Localize("The file name pattern is not valid: {0}", ex.Message), ex);
             }
 
-            _exclude = NameMatcher.Create(criteria.Exclude, MatchMode.Wildcard, false, wrapPlainWildcards: false);
-
             try
             {
                 if (criteria.HasContentSearch)
@@ -84,14 +77,6 @@ namespace FinderSeeker.Search
                 throw new ArgumentException(Localize("The text to find is not valid: {0}", ex.Message), ex);
             }
 
-            var extensions = FileCategories.ExtensionsOf(criteria.Category);
-            if (extensions.Length > 0)
-            {
-                _extensions = new HashSet<string>(extensions, StringComparer.OrdinalIgnoreCase);
-            }
-
-            _wantFiles = criteria.FilesOnly || criteria.Kinds != ItemKinds.Folders;
-            _wantFolders = criteria.Kinds != ItemKinds.Files && !criteria.FilesOnly;
             _recurse = criteria.IncludeSubfolders;
 
             _modifiedAfter = ToUtcTicks(criteria.ModifiedAfter, long.MinValue);
@@ -208,7 +193,6 @@ namespace FinderSeeker.Search
         {
             public string Name;
             public bool IsDirectory;
-            public bool Emit;
             public bool Traverse;
             public long Length;
             public DateTime Modified;
@@ -221,7 +205,7 @@ namespace FinderSeeker.Search
         private sealed class Lister
         {
             private readonly SearchSession _s;
-            private bool _emit, _traverse;
+            private bool _traverse;
 
             public Lister(SearchSession session)
             {
@@ -239,32 +223,18 @@ namespace FinderSeeker.Search
                 bool system = (attributes & FileAttributes.System) != 0;
                 bool visible = (c.IncludeHidden || !hidden) && (c.IncludeSystem || !system);
 
-                _emit = false;
                 _traverse = false;
 
-                if (!visible || s._exclude != null && s._exclude.IsMatch(name))
+                if (!visible)
                 {
                     return false;
                 }
 
                 if (entry.IsDirectory)
                 {
-                    //A junction or a symbolic link is listed but not entered: it may lead back to where we came from.
+                    //A junction or a symbolic link is not entered: it may lead back to where we came from.
                     _traverse = s._recurse && (attributes & FileAttributes.ReparsePoint) == 0;
-
-                    if (s._wantFolders
-                        && s.PassesDates(ref entry)
-                        && (s._name == null || c.NameMatchesFullPath || s._name.IsMatch(name)))
-                    {
-                        _emit = true;
-                    }
-
-                    return _traverse || _emit;
-                }
-
-                if (!s._wantFiles)
-                {
-                    return false;
+                    return _traverse;
                 }
 
                 if (entry.Length < s._minSize || entry.Length > s._maxSize || !s.PassesDates(ref entry))
@@ -272,18 +242,11 @@ namespace FinderSeeker.Search
                     return false;
                 }
 
-                if (s._extensions != null
-                    && !s._extensions.GetAlternateLookup<ReadOnlySpan<char>>().Contains(Path.GetExtension(name)))
+                if (s._name != null && !s._name.IsMatch(name))
                 {
                     return false;
                 }
 
-                if (s._name != null && !c.NameMatchesFullPath && !s._name.IsMatch(name))
-                {
-                    return false;
-                }
-
-                _emit = true;
                 return true;
             }
 
@@ -293,7 +256,6 @@ namespace FinderSeeker.Search
                 {
                     Name = entry.FileName.ToString(),
                     IsDirectory = entry.IsDirectory,
-                    Emit = _emit,
                     Traverse = _traverse,
                     Length = entry.IsDirectory ? 0 : entry.Length,
                     Modified = entry.LastWriteTimeUtc.LocalDateTime,
@@ -377,24 +339,12 @@ namespace FinderSeeker.Search
 
                     if (entry.IsDirectory)
                     {
-                        if (entry.Traverse)
-                        {
-                            Enqueue(Path.Join(folder, entry.Name));
-                        }
-
-                        if (entry.Emit && PassesFullPath(folder, entry.Name))
-                        {
-                            Report(folder, entry, 0, null);
-                        }
+                        Enqueue(Path.Join(folder, entry.Name));
                     }
                     else
                     {
                         Interlocked.Increment(ref _filesScanned);
-
-                        if (entry.Emit)
-                        {
-                            ConsiderFile(folder, entry, token);
-                        }
+                        ConsiderFile(folder, entry, token);
                     }
                 }
             }
@@ -405,23 +355,8 @@ namespace FinderSeeker.Search
             }
         }
 
-        private bool PassesFullPath(string folder, string name)
-        {
-            if (_name == null || !_criteria.NameMatchesFullPath)
-            {
-                return true;
-            }
-
-            return _name.IsMatch(Path.Join(folder, name));
-        }
-
         private void ConsiderFile(string folder, Entry entry, CancellationToken token)
         {
-            if (!PassesFullPath(folder, entry.Name))
-            {
-                return;
-            }
-
             if (_content == null)
             {
                 Report(folder, entry, 0, null);
@@ -466,7 +401,6 @@ namespace FinderSeeker.Search
             {
                 Name = entry.Name,
                 Folder = folder,
-                IsDirectory = entry.IsDirectory,
                 Length = entry.Length,
                 Modified = entry.Modified,
                 Created = entry.Created,

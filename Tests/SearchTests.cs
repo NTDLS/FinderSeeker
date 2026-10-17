@@ -31,13 +31,6 @@ namespace Tests
         [Fact]
         public void BadRegexIsReported() => Assert.ThrowsAny<ArgumentException>(() => NameMatcher.Create("(", MatchMode.Regex, false));
 
-        [Fact]
-        public void ExcludeDoesNotWrapPlainNames()
-        {
-            var exclude = NameMatcher.Create("node_modules", MatchMode.Wildcard, false, wrapPlainWildcards: false)!;
-            Assert.True(exclude.IsMatch("node_modules"));
-            Assert.False(exclude.IsMatch("my_node_modules_backup"));
-        }
     }
 
     public class ContentMatcherTests : IDisposable
@@ -218,16 +211,8 @@ namespace Tests
             => Assert.Equal(["a.txt", "node_modules/pkg/e.txt", "sub/c.txt"], Run(c => c.NamePattern = "*.txt"));
 
         [Fact]
-        public void ExcludeFoldersAreNotEntered()
-            => Assert.Equal(["a.txt", "sub/c.txt"], Run(c => { c.NamePattern = "*.txt"; c.Exclude = "node_modules"; }));
-
-        [Fact]
         public void NoSubfolders()
             => Assert.Equal(["a.txt", "b.cs", "blob.dat"], Run(c => c.IncludeSubfolders = false));
-
-        [Fact]
-        public void CategoryFiltersByExtension()
-            => Assert.Equal(["img/p.png"], Run(c => c.Category = FileCategory.Images));
 
         [Fact]
         public void SizeFilter()
@@ -243,7 +228,7 @@ namespace Tests
 
         [Fact]
         public void ContentCombinedWithName()
-            => Assert.Equal(["a.txt"], Run(c => { c.ContentPattern = "hello"; c.NamePattern = "*.txt"; c.Exclude = "node_modules"; }));
+            => Assert.Equal(["a.txt", "node_modules/pkg/e.txt"], Run(c => { c.ContentPattern = "hello"; c.NamePattern = "*.txt"; }));
 
         [Fact]
         public void ContentRegex()
@@ -255,11 +240,6 @@ namespace Tests
             Assert.DoesNotContain("blob.dat", Run(c => c.ContentPattern = "hello"));
             Assert.Contains("blob.dat", Run(c => { c.ContentPattern = "hello"; c.SearchBinaryFiles = true; }));
         }
-
-        [Fact]
-        public void FoldersCanBeFound()
-            => Assert.Equal(["node_modules", "sub"], Run(c => { c.Kinds = ItemKinds.Folders; c.NamePattern = "*u*"; })
-                .Where(p => !p.Contains('/')).ToList());
 
         [Fact]
         public void ContentResultsCarryLineAndSnippet()

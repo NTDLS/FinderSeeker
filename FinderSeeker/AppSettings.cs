@@ -26,13 +26,9 @@ namespace FinderSeeker
 
         public string Location { get; set; } = string.Empty;
         public bool IncludeSubfolders { get; set; } = true;
-        public ItemKinds Kinds { get; set; } = ItemKinds.Files;
         public string Name { get; set; } = string.Empty;
         public MatchMode NameMode { get; set; } = MatchMode.Wildcard;
         public bool NameCaseSensitive { get; set; }
-        public bool NameMatchesFullPath { get; set; }
-        public string Exclude { get; set; } = "node_modules;.git;.vs";
-        public FileCategory Category { get; set; } = FileCategory.Any;
 
         public bool UseMinSize { get; set; }
         public decimal MinSize { get; set; }

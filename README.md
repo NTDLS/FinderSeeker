@@ -8,11 +8,8 @@ or its index, so the results are always current and nothing has to be indexed fi
 | Criteria | |
 | --- | --- |
 | **Look in** | One or more folders or drives (separate with `;`), or *All local drives*. Folders you have used are remembered. |
-| **Name** | Matched as **wildcards** (`*.cs;*.vb`, a name with no wildcard finds names containing it), **plain text**, or a **regular expression**. Optional match case, and optionally against the full path. |
+| **Name** | Matched as **wildcards** (`*.cs;*.vb`, a name with no wildcard finds names containing it), **plain text**, or a **regular expression**. Optional match case. |
 | **Contains** | Text to find *inside* files, as **plain text**, a **wildcard pattern** or a **regular expression**. Optional match case. |
-| **Type** | Any, text, source code, images, documents, audio, video, archives or programs. |
-| **Show** | Files, folders, or both. |
-| **Exclude** | Names to skip, e.g. `node_modules;.git;*.tmp`. Excluded folders are not entered. |
 | **Size** | At least / at most, in bytes, KB, MB or GB. |
 | **Dates** | Modified and created, after and/or before. |
 | **Other** | Include hidden / system items, search binary files, skip text files over a size. |

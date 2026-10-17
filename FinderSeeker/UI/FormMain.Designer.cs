@@ -45,45 +45,45 @@ namespace FinderSeeker.UI
             labelStats = new ToolStripStatusLabel();
             labelTime = new ToolStripStatusLabel();
             panelCriteria = new Panel();
+            splitContainerTabs = new SplitContainer();
+            tabControl1 = new TabControl();
+            tabPageBasic = new TabPage();
             labelLocation = new Label();
+            checkSystem = new CheckBox();
+            checkHidden = new CheckBox();
+            checkContentCase = new CheckBox();
             comboLocation = new ComboBox();
-            buttonBrowse = new Button();
-            checkSubfolders = new CheckBox();
-            labelName = new Label();
-            comboName = new ComboBox();
-            comboNameMode = new ComboBox();
-            checkNameCase = new CheckBox();
-            labelContains = new Label();
             comboContent = new ComboBox();
             comboContentMode = new ComboBox();
-            checkContentCase = new CheckBox();
-            labelType = new Label();
-            comboCategory = new ComboBox();
-            labelShow = new Label();
-            comboKinds = new ComboBox();
-            labelExclude = new Label();
-            textExclude = new TextBox();
-            checkFullPath = new CheckBox();
-            checkHidden = new CheckBox();
-            checkSystem = new CheckBox();
-            checkBinary = new CheckBox();
-            labelMaxContent = new Label();
-            numMaxContentMb = new NumericUpDown();
-            labelSize = new Label();
+            checkNameCase = new CheckBox();
+            labelContains = new Label();
+            labelName = new Label();
+            comboNameMode = new ComboBox();
+            buttonBrowse = new Button();
+            comboName = new ComboBox();
+            checkSubfolders = new CheckBox();
+            tabPageSizes = new TabPage();
             checkUseMin = new CheckBox();
             numMin = new NumericUpDown();
             comboMinUnit = new ComboBox();
+            comboMaxUnit = new ComboBox();
             checkUseMax = new CheckBox();
             numMax = new NumericUpDown();
-            comboMaxUnit = new ComboBox();
-            labelModifiedAfter = new Label();
+            tabPageDates = new TabPage();
+            groupBoxModifiedDate = new GroupBox();
             dateModifiedAfter = new DateTimePicker();
-            labelModifiedBefore = new Label();
             dateModifiedBefore = new DateTimePicker();
-            labelCreatedAfter = new Label();
+            labelModifiedAfter = new Label();
+            labelModifiedBefore = new Label();
+            groupBoxCreatedDate = new GroupBox();
             dateCreatedAfter = new DateTimePicker();
-            labelCreatedBefore = new Label();
             dateCreatedBefore = new DateTimePicker();
+            labelCreatedAfter = new Label();
+            labelCreatedBefore = new Label();
+            tabPageOptions = new TabPage();
+            numMaxContentMb = new NumericUpDown();
+            checkBinary = new CheckBox();
+            labelMaxContent = new Label();
             buttonSearch = new Button();
             splitMain = new SplitContainer();
             listResults = new DoubleBufferedListView();
@@ -104,17 +104,35 @@ namespace FinderSeeker.UI
             timerUi = new System.Windows.Forms.Timer(components);
             timerPreview = new System.Windows.Forms.Timer(components);
             toolTip = new ToolTip(components);
+            tabControl2 = new TabControl();
+            tabPagePreview = new TabPage();
+            tabPageProperties = new TabPage();
+            listViewProperties = new ListView();
             menuStrip.SuspendLayout();
             statusStrip.SuspendLayout();
             panelCriteria.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numMaxContentMb).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)splitContainerTabs).BeginInit();
+            splitContainerTabs.Panel1.SuspendLayout();
+            splitContainerTabs.Panel2.SuspendLayout();
+            splitContainerTabs.SuspendLayout();
+            tabControl1.SuspendLayout();
+            tabPageBasic.SuspendLayout();
+            tabPageSizes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numMin).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numMax).BeginInit();
+            tabPageDates.SuspendLayout();
+            groupBoxModifiedDate.SuspendLayout();
+            groupBoxCreatedDate.SuspendLayout();
+            tabPageOptions.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numMaxContentMb).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitMain).BeginInit();
             splitMain.Panel1.SuspendLayout();
             splitMain.Panel2.SuspendLayout();
             splitMain.SuspendLayout();
             contextMenuResults.SuspendLayout();
+            tabControl2.SuspendLayout();
+            tabPagePreview.SuspendLayout();
+            tabPageProperties.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip
@@ -122,7 +140,7 @@ namespace FinderSeeker.UI
             menuStrip.Items.AddRange(new ToolStripItem[] { menuFile, menuView, menuHelp });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
-            menuStrip.Size = new Size(1180, 24);
+            menuStrip.Size = new Size(984, 24);
             menuStrip.TabIndex = 0;
             // 
             // menuFile
@@ -193,7 +211,7 @@ namespace FinderSeeker.UI
             statusStrip.Items.AddRange(new ToolStripItem[] { labelState, progressSearch, labelStats, labelTime });
             statusStrip.Location = new Point(0, 698);
             statusStrip.Name = "statusStrip";
-            statusStrip.Size = new Size(1180, 22);
+            statusStrip.Size = new Size(984, 22);
             statusStrip.TabIndex = 3;
             // 
             // labelState
@@ -212,7 +230,7 @@ namespace FinderSeeker.UI
             // labelStats
             // 
             labelStats.Name = "labelStats";
-            labelStats.Size = new Size(1165, 17);
+            labelStats.Size = new Size(969, 17);
             labelStats.Spring = true;
             labelStats.TextAlign = ContentAlignment.MiddleLeft;
             // 
@@ -223,127 +241,144 @@ namespace FinderSeeker.UI
             // 
             // panelCriteria
             // 
-            panelCriteria.Controls.Add(labelLocation);
-            panelCriteria.Controls.Add(comboLocation);
-            panelCriteria.Controls.Add(buttonBrowse);
-            panelCriteria.Controls.Add(checkSubfolders);
-            panelCriteria.Controls.Add(labelName);
-            panelCriteria.Controls.Add(comboName);
-            panelCriteria.Controls.Add(comboNameMode);
-            panelCriteria.Controls.Add(checkNameCase);
-            panelCriteria.Controls.Add(labelContains);
-            panelCriteria.Controls.Add(comboContent);
-            panelCriteria.Controls.Add(comboContentMode);
-            panelCriteria.Controls.Add(checkContentCase);
-            panelCriteria.Controls.Add(labelType);
-            panelCriteria.Controls.Add(comboCategory);
-            panelCriteria.Controls.Add(labelShow);
-            panelCriteria.Controls.Add(comboKinds);
-            panelCriteria.Controls.Add(labelExclude);
-            panelCriteria.Controls.Add(textExclude);
-            panelCriteria.Controls.Add(checkFullPath);
-            panelCriteria.Controls.Add(checkHidden);
-            panelCriteria.Controls.Add(checkSystem);
-            panelCriteria.Controls.Add(checkBinary);
-            panelCriteria.Controls.Add(labelMaxContent);
-            panelCriteria.Controls.Add(numMaxContentMb);
-            panelCriteria.Controls.Add(labelSize);
-            panelCriteria.Controls.Add(checkUseMin);
-            panelCriteria.Controls.Add(numMin);
-            panelCriteria.Controls.Add(comboMinUnit);
-            panelCriteria.Controls.Add(checkUseMax);
-            panelCriteria.Controls.Add(numMax);
-            panelCriteria.Controls.Add(comboMaxUnit);
-            panelCriteria.Controls.Add(labelModifiedAfter);
-            panelCriteria.Controls.Add(dateModifiedAfter);
-            panelCriteria.Controls.Add(labelModifiedBefore);
-            panelCriteria.Controls.Add(dateModifiedBefore);
-            panelCriteria.Controls.Add(labelCreatedAfter);
-            panelCriteria.Controls.Add(dateCreatedAfter);
-            panelCriteria.Controls.Add(labelCreatedBefore);
-            panelCriteria.Controls.Add(dateCreatedBefore);
-            panelCriteria.Controls.Add(buttonSearch);
+            panelCriteria.Controls.Add(splitContainerTabs);
             panelCriteria.Dock = DockStyle.Top;
             panelCriteria.Location = new Point(0, 24);
             panelCriteria.Name = "panelCriteria";
-            panelCriteria.Size = new Size(1180, 282);
+            panelCriteria.Size = new Size(984, 216);
             panelCriteria.TabIndex = 1;
+            // 
+            // splitContainerTabs
+            // 
+            splitContainerTabs.Dock = DockStyle.Fill;
+            splitContainerTabs.FixedPanel = FixedPanel.Panel1;
+            splitContainerTabs.Location = new Point(0, 0);
+            splitContainerTabs.Name = "splitContainerTabs";
+            splitContainerTabs.Orientation = Orientation.Horizontal;
+            // 
+            // splitContainerTabs.Panel1
+            // 
+            splitContainerTabs.Panel1.Controls.Add(tabControl1);
+            // 
+            // splitContainerTabs.Panel2
+            // 
+            splitContainerTabs.Panel2.Controls.Add(buttonSearch);
+            splitContainerTabs.Size = new Size(984, 216);
+            splitContainerTabs.SplitterDistance = 163;
+            splitContainerTabs.TabIndex = 44;
+            // 
+            // tabControl1
+            // 
+            tabControl1.Controls.Add(tabPageBasic);
+            tabControl1.Controls.Add(tabPageSizes);
+            tabControl1.Controls.Add(tabPageDates);
+            tabControl1.Controls.Add(tabPageOptions);
+            tabControl1.Dock = DockStyle.Fill;
+            tabControl1.Location = new Point(0, 0);
+            tabControl1.Name = "tabControl1";
+            tabControl1.SelectedIndex = 0;
+            tabControl1.Size = new Size(984, 163);
+            tabControl1.TabIndex = 43;
+            // 
+            // tabPageBasic
+            // 
+            tabPageBasic.Controls.Add(labelLocation);
+            tabPageBasic.Controls.Add(checkSystem);
+            tabPageBasic.Controls.Add(checkHidden);
+            tabPageBasic.Controls.Add(checkContentCase);
+            tabPageBasic.Controls.Add(comboLocation);
+            tabPageBasic.Controls.Add(comboContent);
+            tabPageBasic.Controls.Add(comboContentMode);
+            tabPageBasic.Controls.Add(checkNameCase);
+            tabPageBasic.Controls.Add(labelContains);
+            tabPageBasic.Controls.Add(labelName);
+            tabPageBasic.Controls.Add(comboNameMode);
+            tabPageBasic.Controls.Add(buttonBrowse);
+            tabPageBasic.Controls.Add(comboName);
+            tabPageBasic.Controls.Add(checkSubfolders);
+            tabPageBasic.Location = new Point(4, 24);
+            tabPageBasic.Name = "tabPageBasic";
+            tabPageBasic.Padding = new Padding(3);
+            tabPageBasic.Size = new Size(976, 135);
+            tabPageBasic.TabIndex = 0;
+            tabPageBasic.Text = "Basic";
+            tabPageBasic.UseVisualStyleBackColor = true;
             // 
             // labelLocation
             // 
             labelLocation.AutoSize = true;
-            labelLocation.Location = new Point(12, 17);
+            labelLocation.Location = new Point(6, 9);
             labelLocation.Name = "labelLocation";
-            labelLocation.Size = new Size(49, 15);
+            labelLocation.Size = new Size(31, 15);
             labelLocation.TabIndex = 0;
-            labelLocation.Text = "Look in:";
+            labelLocation.Text = "Path";
+            // 
+            // checkSystem
+            // 
+            checkSystem.AutoSize = true;
+            checkSystem.Location = new Point(218, 93);
+            checkSystem.Name = "checkSystem";
+            checkSystem.Size = new Size(96, 19);
+            checkSystem.TabIndex = 20;
+            checkSystem.Text = "System items";
+            checkSystem.UseVisualStyleBackColor = true;
+            // 
+            // checkHidden
+            // 
+            checkHidden.AutoSize = true;
+            checkHidden.Checked = true;
+            checkHidden.CheckState = CheckState.Checked;
+            checkHidden.Location = new Point(76, 93);
+            checkHidden.Name = "checkHidden";
+            checkHidden.Size = new Size(97, 19);
+            checkHidden.TabIndex = 19;
+            checkHidden.Text = "Hidden items";
+            checkHidden.UseVisualStyleBackColor = true;
+            // 
+            // checkContentCase
+            // 
+            checkContentCase.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            checkContentCase.Appearance = Appearance.Button;
+            checkContentCase.Location = new Point(932, 61);
+            checkContentCase.Name = "checkContentCase";
+            checkContentCase.Size = new Size(36, 26);
+            checkContentCase.TabIndex = 11;
+            checkContentCase.TextAlign = ContentAlignment.MiddleCenter;
+            checkContentCase.UseVisualStyleBackColor = true;
             // 
             // comboLocation
             // 
             comboLocation.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboLocation.FormattingEnabled = true;
-            comboLocation.Location = new Point(92, 13);
+            comboLocation.Location = new Point(76, 6);
             comboLocation.Name = "comboLocation";
-            comboLocation.Size = new Size(800, 23);
+            comboLocation.Size = new Size(693, 23);
             comboLocation.TabIndex = 1;
             // 
-            // buttonBrowse
+            // comboContent
             // 
-            buttonBrowse.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            buttonBrowse.Location = new Point(904, 12);
-            buttonBrowse.Name = "buttonBrowse";
-            buttonBrowse.Size = new Size(100, 26);
-            buttonBrowse.TabIndex = 2;
-            buttonBrowse.Text = "Browse...";
-            buttonBrowse.UseVisualStyleBackColor = true;
-            buttonBrowse.Click += buttonBrowse_Click;
+            comboContent.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            comboContent.FormattingEnabled = true;
+            comboContent.Location = new Point(76, 64);
+            comboContent.Name = "comboContent";
+            comboContent.Size = new Size(693, 23);
+            comboContent.TabIndex = 9;
             // 
-            // checkSubfolders
+            // comboContentMode
             // 
-            checkSubfolders.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            checkSubfolders.AutoSize = true;
-            checkSubfolders.Checked = true;
-            checkSubfolders.CheckState = CheckState.Checked;
-            checkSubfolders.Location = new Point(1014, 16);
-            checkSubfolders.Name = "checkSubfolders";
-            checkSubfolders.Size = new Size(123, 19);
-            checkSubfolders.TabIndex = 3;
-            checkSubfolders.Text = "Include subfolders";
-            checkSubfolders.UseVisualStyleBackColor = true;
-            // 
-            // labelName
-            // 
-            labelName.AutoSize = true;
-            labelName.Location = new Point(12, 47);
-            labelName.Name = "labelName";
-            labelName.Size = new Size(42, 15);
-            labelName.TabIndex = 4;
-            labelName.Text = "Name:";
-            // 
-            // comboName
-            // 
-            comboName.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            comboName.FormattingEnabled = true;
-            comboName.Location = new Point(92, 43);
-            comboName.Name = "comboName";
-            comboName.Size = new Size(800, 23);
-            comboName.TabIndex = 5;
-            // 
-            // comboNameMode
-            // 
-            comboNameMode.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            comboNameMode.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboNameMode.FormattingEnabled = true;
-            comboNameMode.Location = new Point(904, 43);
-            comboNameMode.Name = "comboNameMode";
-            comboNameMode.Size = new Size(150, 23);
-            comboNameMode.TabIndex = 6;
+            comboContentMode.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            comboContentMode.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboContentMode.FormattingEnabled = true;
+            comboContentMode.Location = new Point(775, 64);
+            comboContentMode.Name = "comboContentMode";
+            comboContentMode.Size = new Size(150, 23);
+            comboContentMode.TabIndex = 10;
             // 
             // checkNameCase
             // 
             checkNameCase.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             checkNameCase.Appearance = Appearance.Button;
-            checkNameCase.Location = new Point(1062, 42);
+            checkNameCase.Location = new Point(932, 32);
             checkNameCase.Name = "checkNameCase";
             checkNameCase.Size = new Size(36, 26);
             checkNameCase.TabIndex = 7;
@@ -353,167 +388,84 @@ namespace FinderSeeker.UI
             // labelContains
             // 
             labelContains.AutoSize = true;
-            labelContains.Location = new Point(12, 77);
+            labelContains.Location = new Point(3, 67);
             labelContains.Name = "labelContains";
-            labelContains.Size = new Size(57, 15);
+            labelContains.Size = new Size(28, 15);
             labelContains.TabIndex = 8;
-            labelContains.Text = "Contains:";
+            labelContains.Text = "Text";
             // 
-            // comboContent
+            // labelName
             // 
-            comboContent.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            comboContent.FormattingEnabled = true;
-            comboContent.Location = new Point(92, 73);
-            comboContent.Name = "comboContent";
-            comboContent.Size = new Size(800, 23);
-            comboContent.TabIndex = 9;
+            labelName.AutoSize = true;
+            labelName.Location = new Point(6, 38);
+            labelName.Name = "labelName";
+            labelName.Size = new Size(39, 15);
+            labelName.TabIndex = 4;
+            labelName.Text = "Name";
             // 
-            // comboContentMode
+            // comboNameMode
             // 
-            comboContentMode.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            comboContentMode.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboContentMode.FormattingEnabled = true;
-            comboContentMode.Location = new Point(904, 73);
-            comboContentMode.Name = "comboContentMode";
-            comboContentMode.Size = new Size(150, 23);
-            comboContentMode.TabIndex = 10;
+            comboNameMode.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            comboNameMode.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboNameMode.FormattingEnabled = true;
+            comboNameMode.Location = new Point(775, 35);
+            comboNameMode.Name = "comboNameMode";
+            comboNameMode.Size = new Size(150, 23);
+            comboNameMode.TabIndex = 6;
             // 
-            // checkContentCase
+            // buttonBrowse
             // 
-            checkContentCase.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            checkContentCase.Appearance = Appearance.Button;
-            checkContentCase.Location = new Point(1062, 72);
-            checkContentCase.Name = "checkContentCase";
-            checkContentCase.Size = new Size(36, 26);
-            checkContentCase.TabIndex = 11;
-            checkContentCase.TextAlign = ContentAlignment.MiddleCenter;
-            checkContentCase.UseVisualStyleBackColor = true;
+            buttonBrowse.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonBrowse.Location = new Point(775, 6);
+            buttonBrowse.Name = "buttonBrowse";
+            buttonBrowse.Size = new Size(100, 26);
+            buttonBrowse.TabIndex = 2;
+            buttonBrowse.Text = "Browse...";
+            buttonBrowse.UseVisualStyleBackColor = true;
+            buttonBrowse.Click += buttonBrowse_Click;
             // 
-            // labelType
+            // comboName
             // 
-            labelType.AutoSize = true;
-            labelType.Location = new Point(12, 111);
-            labelType.Name = "labelType";
-            labelType.Size = new Size(35, 15);
-            labelType.TabIndex = 12;
-            labelType.Text = "Type:";
+            comboName.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            comboName.FormattingEnabled = true;
+            comboName.Location = new Point(76, 35);
+            comboName.Name = "comboName";
+            comboName.Size = new Size(693, 23);
+            comboName.TabIndex = 5;
             // 
-            // comboCategory
+            // checkSubfolders
             // 
-            comboCategory.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboCategory.FormattingEnabled = true;
-            comboCategory.Location = new Point(92, 107);
-            comboCategory.Name = "comboCategory";
-            comboCategory.Size = new Size(150, 23);
-            comboCategory.TabIndex = 13;
+            checkSubfolders.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            checkSubfolders.AutoSize = true;
+            checkSubfolders.Checked = true;
+            checkSubfolders.CheckState = CheckState.Checked;
+            checkSubfolders.Location = new Point(881, 10);
+            checkSubfolders.Name = "checkSubfolders";
+            checkSubfolders.Size = new Size(87, 19);
+            checkSubfolders.TabIndex = 3;
+            checkSubfolders.Text = "Subfolders?";
+            checkSubfolders.UseVisualStyleBackColor = true;
             // 
-            // labelShow
+            // tabPageSizes
             // 
-            labelShow.AutoSize = true;
-            labelShow.Location = new Point(262, 111);
-            labelShow.Name = "labelShow";
-            labelShow.Size = new Size(39, 15);
-            labelShow.TabIndex = 14;
-            labelShow.Text = "Show:";
-            // 
-            // comboKinds
-            // 
-            comboKinds.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboKinds.FormattingEnabled = true;
-            comboKinds.Location = new Point(310, 107);
-            comboKinds.Name = "comboKinds";
-            comboKinds.Size = new Size(150, 23);
-            comboKinds.TabIndex = 15;
-            // 
-            // labelExclude
-            // 
-            labelExclude.AutoSize = true;
-            labelExclude.Location = new Point(482, 111);
-            labelExclude.Name = "labelExclude";
-            labelExclude.Size = new Size(50, 15);
-            labelExclude.TabIndex = 16;
-            labelExclude.Text = "Exclude:";
-            // 
-            // textExclude
-            // 
-            textExclude.Location = new Point(542, 107);
-            textExclude.Name = "textExclude";
-            textExclude.Size = new Size(200, 23);
-            textExclude.TabIndex = 17;
-            // 
-            // checkFullPath
-            // 
-            checkFullPath.AutoSize = true;
-            checkFullPath.Location = new Point(756, 109);
-            checkFullPath.Name = "checkFullPath";
-            checkFullPath.Size = new Size(127, 19);
-            checkFullPath.TabIndex = 18;
-            checkFullPath.Text = "Match the full path";
-            checkFullPath.UseVisualStyleBackColor = true;
-            // 
-            // checkHidden
-            // 
-            checkHidden.AutoSize = true;
-            checkHidden.Checked = true;
-            checkHidden.CheckState = CheckState.Checked;
-            checkHidden.Location = new Point(900, 109);
-            checkHidden.Name = "checkHidden";
-            checkHidden.Size = new Size(97, 19);
-            checkHidden.TabIndex = 19;
-            checkHidden.Text = "Hidden items";
-            checkHidden.UseVisualStyleBackColor = true;
-            // 
-            // checkSystem
-            // 
-            checkSystem.AutoSize = true;
-            checkSystem.Location = new Point(1006, 109);
-            checkSystem.Name = "checkSystem";
-            checkSystem.Size = new Size(96, 19);
-            checkSystem.TabIndex = 20;
-            checkSystem.Text = "System items";
-            checkSystem.UseVisualStyleBackColor = true;
-            // 
-            // checkBinary
-            // 
-            checkBinary.AutoSize = true;
-            checkBinary.Location = new Point(12, 143);
-            checkBinary.Name = "checkBinary";
-            checkBinary.Size = new Size(121, 19);
-            checkBinary.TabIndex = 21;
-            checkBinary.Text = "Search binary files";
-            checkBinary.UseVisualStyleBackColor = true;
-            // 
-            // labelMaxContent
-            // 
-            labelMaxContent.AutoSize = true;
-            labelMaxContent.Location = new Point(200, 144);
-            labelMaxContent.Name = "labelMaxContent";
-            labelMaxContent.Size = new Size(167, 15);
-            labelMaxContent.TabIndex = 22;
-            labelMaxContent.Text = "Skip text files larger than (MB):";
-            // 
-            // numMaxContentMb
-            // 
-            numMaxContentMb.Location = new Point(400, 140);
-            numMaxContentMb.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
-            numMaxContentMb.Name = "numMaxContentMb";
-            numMaxContentMb.Size = new Size(80, 23);
-            numMaxContentMb.TabIndex = 23;
-            numMaxContentMb.ThousandsSeparator = true;
-            // 
-            // labelSize
-            // 
-            labelSize.AutoSize = true;
-            labelSize.Location = new Point(12, 177);
-            labelSize.Name = "labelSize";
-            labelSize.Size = new Size(30, 15);
-            labelSize.TabIndex = 24;
-            labelSize.Text = "Size:";
+            tabPageSizes.Controls.Add(checkUseMin);
+            tabPageSizes.Controls.Add(numMin);
+            tabPageSizes.Controls.Add(comboMinUnit);
+            tabPageSizes.Controls.Add(comboMaxUnit);
+            tabPageSizes.Controls.Add(checkUseMax);
+            tabPageSizes.Controls.Add(numMax);
+            tabPageSizes.Location = new Point(4, 24);
+            tabPageSizes.Name = "tabPageSizes";
+            tabPageSizes.Padding = new Padding(3);
+            tabPageSizes.Size = new Size(976, 135);
+            tabPageSizes.TabIndex = 2;
+            tabPageSizes.Text = "Sizes";
+            tabPageSizes.UseVisualStyleBackColor = true;
             // 
             // checkUseMin
             // 
             checkUseMin.AutoSize = true;
-            checkUseMin.Location = new Point(92, 176);
+            checkUseMin.Location = new Point(6, 6);
             checkUseMin.Name = "checkUseMin";
             checkUseMin.Size = new Size(65, 19);
             checkUseMin.TabIndex = 25;
@@ -523,10 +475,10 @@ namespace FinderSeeker.UI
             // 
             // numMin
             // 
-            numMin.Location = new Point(170, 173);
+            numMin.Location = new Point(113, 6);
             numMin.Maximum = new decimal(new int[] { -727379968, 232, 0, 0 });
             numMin.Name = "numMin";
-            numMin.Size = new Size(110, 23);
+            numMin.Size = new Size(72, 23);
             numMin.TabIndex = 26;
             numMin.ThousandsSeparator = true;
             // 
@@ -534,15 +486,24 @@ namespace FinderSeeker.UI
             // 
             comboMinUnit.DropDownStyle = ComboBoxStyle.DropDownList;
             comboMinUnit.FormattingEnabled = true;
-            comboMinUnit.Location = new Point(288, 173);
+            comboMinUnit.Location = new Point(191, 6);
             comboMinUnit.Name = "comboMinUnit";
             comboMinUnit.Size = new Size(72, 23);
             comboMinUnit.TabIndex = 27;
             // 
+            // comboMaxUnit
+            // 
+            comboMaxUnit.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboMaxUnit.FormattingEnabled = true;
+            comboMaxUnit.Location = new Point(191, 35);
+            comboMaxUnit.Name = "comboMaxUnit";
+            comboMaxUnit.Size = new Size(72, 23);
+            comboMaxUnit.TabIndex = 30;
+            // 
             // checkUseMax
             // 
             checkUseMax.AutoSize = true;
-            checkUseMax.Location = new Point(392, 176);
+            checkUseMax.Location = new Point(6, 36);
             checkUseMax.Name = "checkUseMax";
             checkUseMax.Size = new Size(68, 19);
             checkUseMax.TabIndex = 28;
@@ -552,106 +513,177 @@ namespace FinderSeeker.UI
             // 
             // numMax
             // 
-            numMax.Location = new Point(470, 173);
+            numMax.Location = new Point(113, 35);
             numMax.Maximum = new decimal(new int[] { -727379968, 232, 0, 0 });
             numMax.Name = "numMax";
-            numMax.Size = new Size(110, 23);
+            numMax.Size = new Size(72, 23);
             numMax.TabIndex = 29;
             numMax.ThousandsSeparator = true;
             // 
-            // comboMaxUnit
+            // tabPageDates
             // 
-            comboMaxUnit.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboMaxUnit.FormattingEnabled = true;
-            comboMaxUnit.Location = new Point(588, 173);
-            comboMaxUnit.Name = "comboMaxUnit";
-            comboMaxUnit.Size = new Size(72, 23);
-            comboMaxUnit.TabIndex = 30;
+            tabPageDates.Controls.Add(groupBoxModifiedDate);
+            tabPageDates.Controls.Add(groupBoxCreatedDate);
+            tabPageDates.Location = new Point(4, 24);
+            tabPageDates.Name = "tabPageDates";
+            tabPageDates.Padding = new Padding(3);
+            tabPageDates.Size = new Size(976, 135);
+            tabPageDates.TabIndex = 1;
+            tabPageDates.Text = "Dates";
+            tabPageDates.UseVisualStyleBackColor = true;
             // 
-            // labelModifiedAfter
+            // groupBoxModifiedDate
             // 
-            labelModifiedAfter.AutoSize = true;
-            labelModifiedAfter.Location = new Point(12, 211);
-            labelModifiedAfter.Name = "labelModifiedAfter";
-            labelModifiedAfter.Size = new Size(85, 15);
-            labelModifiedAfter.TabIndex = 31;
-            labelModifiedAfter.Text = "Modified after:";
+            groupBoxModifiedDate.Controls.Add(dateModifiedAfter);
+            groupBoxModifiedDate.Controls.Add(dateModifiedBefore);
+            groupBoxModifiedDate.Controls.Add(labelModifiedAfter);
+            groupBoxModifiedDate.Controls.Add(labelModifiedBefore);
+            groupBoxModifiedDate.Location = new Point(6, 6);
+            groupBoxModifiedDate.Name = "groupBoxModifiedDate";
+            groupBoxModifiedDate.Size = new Size(296, 89);
+            groupBoxModifiedDate.TabIndex = 41;
+            groupBoxModifiedDate.TabStop = false;
+            groupBoxModifiedDate.Text = "Modified Date";
             // 
             // dateModifiedAfter
             // 
             dateModifiedAfter.Checked = false;
             dateModifiedAfter.CustomFormat = "yyyy-MM-dd HH:mm";
             dateModifiedAfter.Format = DateTimePickerFormat.Custom;
-            dateModifiedAfter.Location = new Point(112, 207);
+            dateModifiedAfter.Location = new Point(120, 22);
             dateModifiedAfter.Name = "dateModifiedAfter";
             dateModifiedAfter.ShowCheckBox = true;
             dateModifiedAfter.Size = new Size(170, 23);
             dateModifiedAfter.TabIndex = 32;
-            // 
-            // labelModifiedBefore
-            // 
-            labelModifiedBefore.AutoSize = true;
-            labelModifiedBefore.Location = new Point(296, 211);
-            labelModifiedBefore.Name = "labelModifiedBefore";
-            labelModifiedBefore.Size = new Size(44, 15);
-            labelModifiedBefore.TabIndex = 33;
-            labelModifiedBefore.Text = "before:";
             // 
             // dateModifiedBefore
             // 
             dateModifiedBefore.Checked = false;
             dateModifiedBefore.CustomFormat = "yyyy-MM-dd HH:mm";
             dateModifiedBefore.Format = DateTimePickerFormat.Custom;
-            dateModifiedBefore.Location = new Point(348, 207);
+            dateModifiedBefore.Location = new Point(120, 51);
             dateModifiedBefore.Name = "dateModifiedBefore";
             dateModifiedBefore.ShowCheckBox = true;
             dateModifiedBefore.Size = new Size(170, 23);
             dateModifiedBefore.TabIndex = 34;
             // 
-            // labelCreatedAfter
+            // labelModifiedAfter
             // 
-            labelCreatedAfter.AutoSize = true;
-            labelCreatedAfter.Location = new Point(546, 211);
-            labelCreatedAfter.Name = "labelCreatedAfter";
-            labelCreatedAfter.Size = new Size(78, 15);
-            labelCreatedAfter.TabIndex = 35;
-            labelCreatedAfter.Text = "Created after:";
+            labelModifiedAfter.AutoSize = true;
+            labelModifiedAfter.Location = new Point(10, 22);
+            labelModifiedAfter.Name = "labelModifiedAfter";
+            labelModifiedAfter.Size = new Size(33, 15);
+            labelModifiedAfter.TabIndex = 31;
+            labelModifiedAfter.Text = "After";
+            // 
+            // labelModifiedBefore
+            // 
+            labelModifiedBefore.AutoSize = true;
+            labelModifiedBefore.Location = new Point(10, 51);
+            labelModifiedBefore.Name = "labelModifiedBefore";
+            labelModifiedBefore.Size = new Size(41, 15);
+            labelModifiedBefore.TabIndex = 33;
+            labelModifiedBefore.Text = "Before";
+            // 
+            // groupBoxCreatedDate
+            // 
+            groupBoxCreatedDate.Controls.Add(dateCreatedAfter);
+            groupBoxCreatedDate.Controls.Add(dateCreatedBefore);
+            groupBoxCreatedDate.Controls.Add(labelCreatedAfter);
+            groupBoxCreatedDate.Controls.Add(labelCreatedBefore);
+            groupBoxCreatedDate.Location = new Point(308, 6);
+            groupBoxCreatedDate.Name = "groupBoxCreatedDate";
+            groupBoxCreatedDate.Size = new Size(296, 89);
+            groupBoxCreatedDate.TabIndex = 42;
+            groupBoxCreatedDate.TabStop = false;
+            groupBoxCreatedDate.Text = "Created Date";
             // 
             // dateCreatedAfter
             // 
             dateCreatedAfter.Checked = false;
             dateCreatedAfter.CustomFormat = "yyyy-MM-dd HH:mm";
             dateCreatedAfter.Format = DateTimePickerFormat.Custom;
-            dateCreatedAfter.Location = new Point(640, 207);
+            dateCreatedAfter.Location = new Point(120, 27);
             dateCreatedAfter.Name = "dateCreatedAfter";
             dateCreatedAfter.ShowCheckBox = true;
             dateCreatedAfter.Size = new Size(170, 23);
             dateCreatedAfter.TabIndex = 36;
-            // 
-            // labelCreatedBefore
-            // 
-            labelCreatedBefore.AutoSize = true;
-            labelCreatedBefore.Location = new Point(824, 211);
-            labelCreatedBefore.Name = "labelCreatedBefore";
-            labelCreatedBefore.Size = new Size(44, 15);
-            labelCreatedBefore.TabIndex = 37;
-            labelCreatedBefore.Text = "before:";
             // 
             // dateCreatedBefore
             // 
             dateCreatedBefore.Checked = false;
             dateCreatedBefore.CustomFormat = "yyyy-MM-dd HH:mm";
             dateCreatedBefore.Format = DateTimePickerFormat.Custom;
-            dateCreatedBefore.Location = new Point(876, 207);
+            dateCreatedBefore.Location = new Point(119, 56);
             dateCreatedBefore.Name = "dateCreatedBefore";
             dateCreatedBefore.ShowCheckBox = true;
             dateCreatedBefore.Size = new Size(170, 23);
             dateCreatedBefore.TabIndex = 38;
             // 
+            // labelCreatedAfter
+            // 
+            labelCreatedAfter.AutoSize = true;
+            labelCreatedAfter.Location = new Point(6, 27);
+            labelCreatedAfter.Name = "labelCreatedAfter";
+            labelCreatedAfter.Size = new Size(33, 15);
+            labelCreatedAfter.TabIndex = 35;
+            labelCreatedAfter.Text = "After";
+            // 
+            // labelCreatedBefore
+            // 
+            labelCreatedBefore.AutoSize = true;
+            labelCreatedBefore.Location = new Point(6, 58);
+            labelCreatedBefore.Name = "labelCreatedBefore";
+            labelCreatedBefore.Size = new Size(41, 15);
+            labelCreatedBefore.TabIndex = 37;
+            labelCreatedBefore.Text = "Before";
+            // 
+            // tabPageOptions
+            // 
+            tabPageOptions.Controls.Add(numMaxContentMb);
+            tabPageOptions.Controls.Add(checkBinary);
+            tabPageOptions.Controls.Add(labelMaxContent);
+            tabPageOptions.Location = new Point(4, 24);
+            tabPageOptions.Name = "tabPageOptions";
+            tabPageOptions.Padding = new Padding(3);
+            tabPageOptions.Size = new Size(976, 135);
+            tabPageOptions.TabIndex = 3;
+            tabPageOptions.Text = "Options";
+            tabPageOptions.UseVisualStyleBackColor = true;
+            // 
+            // numMaxContentMb
+            // 
+            numMaxContentMb.Location = new Point(6, 61);
+            numMaxContentMb.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            numMaxContentMb.Name = "numMaxContentMb";
+            numMaxContentMb.Size = new Size(80, 23);
+            numMaxContentMb.TabIndex = 23;
+            numMaxContentMb.ThousandsSeparator = true;
+            // 
+            // checkBinary
+            // 
+            checkBinary.AutoSize = true;
+            checkBinary.Location = new Point(6, 6);
+            checkBinary.Name = "checkBinary";
+            checkBinary.Size = new Size(121, 19);
+            checkBinary.TabIndex = 21;
+            checkBinary.Text = "Search binary files";
+            checkBinary.UseVisualStyleBackColor = true;
+            // 
+            // labelMaxContent
+            // 
+            labelMaxContent.AutoSize = true;
+            labelMaxContent.Location = new Point(6, 43);
+            labelMaxContent.Name = "labelMaxContent";
+            labelMaxContent.Size = new Size(167, 15);
+            labelMaxContent.TabIndex = 22;
+            labelMaxContent.Text = "Skip text files larger than (MB):";
+            // 
             // buttonSearch
             // 
+            buttonSearch.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             buttonSearch.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            buttonSearch.Location = new Point(12, 242);
+            buttonSearch.Location = new Point(852, 11);
             buttonSearch.Name = "buttonSearch";
             buttonSearch.Size = new Size(120, 32);
             buttonSearch.TabIndex = 39;
@@ -663,7 +695,7 @@ namespace FinderSeeker.UI
             // 
             splitMain.Dock = DockStyle.Fill;
             splitMain.FixedPanel = FixedPanel.Panel2;
-            splitMain.Location = new Point(0, 306);
+            splitMain.Location = new Point(0, 240);
             splitMain.Name = "splitMain";
             // 
             // splitMain.Panel1
@@ -672,9 +704,9 @@ namespace FinderSeeker.UI
             // 
             // splitMain.Panel2
             // 
-            splitMain.Panel2.Controls.Add(previewPanel);
-            splitMain.Size = new Size(1180, 392);
-            splitMain.SplitterDistance = 750;
+            splitMain.Panel2.Controls.Add(tabControl2);
+            splitMain.Size = new Size(984, 458);
+            splitMain.SplitterDistance = 554;
             splitMain.TabIndex = 2;
             // 
             // listResults
@@ -686,7 +718,7 @@ namespace FinderSeeker.UI
             listResults.FullRowSelect = true;
             listResults.Location = new Point(0, 0);
             listResults.Name = "listResults";
-            listResults.Size = new Size(750, 392);
+            listResults.Size = new Size(554, 458);
             listResults.TabIndex = 0;
             listResults.UseCompatibleStateImageBehavior = false;
             listResults.View = View.Details;
@@ -779,9 +811,9 @@ namespace FinderSeeker.UI
             // 
             previewPanel.Dock = DockStyle.Fill;
             previewPanel.Highlighter = null;
-            previewPanel.Location = new Point(0, 0);
+            previewPanel.Location = new Point(3, 3);
             previewPanel.Name = "previewPanel";
-            previewPanel.Size = new Size(426, 392);
+            previewPanel.Size = new Size(412, 424);
             previewPanel.TabIndex = 0;
             // 
             // timerUi
@@ -799,12 +831,55 @@ namespace FinderSeeker.UI
             toolTip.InitialDelay = 500;
             toolTip.ReshowDelay = 100;
             // 
+            // tabControl2
+            // 
+            tabControl2.Controls.Add(tabPagePreview);
+            tabControl2.Controls.Add(tabPageProperties);
+            tabControl2.Dock = DockStyle.Fill;
+            tabControl2.Location = new Point(0, 0);
+            tabControl2.Name = "tabControl2";
+            tabControl2.SelectedIndex = 0;
+            tabControl2.Size = new Size(426, 458);
+            tabControl2.TabIndex = 1;
+            // 
+            // tabPagePreview
+            // 
+            tabPagePreview.Controls.Add(previewPanel);
+            tabPagePreview.Location = new Point(4, 24);
+            tabPagePreview.Name = "tabPagePreview";
+            tabPagePreview.Padding = new Padding(3);
+            tabPagePreview.Size = new Size(418, 430);
+            tabPagePreview.TabIndex = 0;
+            tabPagePreview.Text = "Preview";
+            tabPagePreview.UseVisualStyleBackColor = true;
+            // 
+            // tabPageProperties
+            // 
+            tabPageProperties.Controls.Add(listViewProperties);
+            tabPageProperties.Location = new Point(4, 24);
+            tabPageProperties.Name = "tabPageProperties";
+            tabPageProperties.Padding = new Padding(3);
+            tabPageProperties.Size = new Size(418, 430);
+            tabPageProperties.TabIndex = 1;
+            tabPageProperties.Text = "Properties";
+            tabPageProperties.UseVisualStyleBackColor = true;
+            // 
+            // listViewProperties
+            // 
+            listViewProperties.Dock = DockStyle.Fill;
+            listViewProperties.Location = new Point(3, 3);
+            listViewProperties.Name = "listViewProperties";
+            listViewProperties.Size = new Size(412, 424);
+            listViewProperties.TabIndex = 0;
+            listViewProperties.UseCompatibleStateImageBehavior = false;
+            listViewProperties.View = View.Details;
+            // 
             // FormMain
             // 
             AcceptButton = buttonSearch;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1180, 720);
+            ClientSize = new Size(984, 720);
             Controls.Add(splitMain);
             Controls.Add(panelCriteria);
             Controls.Add(menuStrip);
@@ -818,15 +893,33 @@ namespace FinderSeeker.UI
             statusStrip.ResumeLayout(false);
             statusStrip.PerformLayout();
             panelCriteria.ResumeLayout(false);
-            panelCriteria.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numMaxContentMb).EndInit();
+            splitContainerTabs.Panel1.ResumeLayout(false);
+            splitContainerTabs.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainerTabs).EndInit();
+            splitContainerTabs.ResumeLayout(false);
+            tabControl1.ResumeLayout(false);
+            tabPageBasic.ResumeLayout(false);
+            tabPageBasic.PerformLayout();
+            tabPageSizes.ResumeLayout(false);
+            tabPageSizes.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numMin).EndInit();
             ((System.ComponentModel.ISupportInitialize)numMax).EndInit();
+            tabPageDates.ResumeLayout(false);
+            groupBoxModifiedDate.ResumeLayout(false);
+            groupBoxModifiedDate.PerformLayout();
+            groupBoxCreatedDate.ResumeLayout(false);
+            groupBoxCreatedDate.PerformLayout();
+            tabPageOptions.ResumeLayout(false);
+            tabPageOptions.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numMaxContentMb).EndInit();
             splitMain.Panel1.ResumeLayout(false);
             splitMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitMain).EndInit();
             splitMain.ResumeLayout(false);
             contextMenuResults.ResumeLayout(false);
+            tabControl2.ResumeLayout(false);
+            tabPagePreview.ResumeLayout(false);
+            tabPageProperties.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -861,19 +954,11 @@ namespace FinderSeeker.UI
         private System.Windows.Forms.ComboBox comboContent;
         private System.Windows.Forms.ComboBox comboContentMode;
         private System.Windows.Forms.CheckBox checkContentCase;
-        private System.Windows.Forms.Label labelType;
-        private System.Windows.Forms.ComboBox comboCategory;
-        private System.Windows.Forms.Label labelShow;
-        private System.Windows.Forms.ComboBox comboKinds;
-        private System.Windows.Forms.Label labelExclude;
-        private System.Windows.Forms.TextBox textExclude;
-        private System.Windows.Forms.CheckBox checkFullPath;
         private System.Windows.Forms.CheckBox checkHidden;
         private System.Windows.Forms.CheckBox checkSystem;
         private System.Windows.Forms.CheckBox checkBinary;
         private System.Windows.Forms.Label labelMaxContent;
         private System.Windows.Forms.NumericUpDown numMaxContentMb;
-        private System.Windows.Forms.Label labelSize;
         private System.Windows.Forms.CheckBox checkUseMin;
         private System.Windows.Forms.NumericUpDown numMin;
         private System.Windows.Forms.ComboBox comboMinUnit;
@@ -908,5 +993,17 @@ namespace FinderSeeker.UI
         private System.Windows.Forms.Timer timerUi;
         private System.Windows.Forms.Timer timerPreview;
         private System.Windows.Forms.ToolTip toolTip;
+        private GroupBox groupBoxCreatedDate;
+        private GroupBox groupBoxModifiedDate;
+        private TabControl tabControl1;
+        private TabPage tabPageBasic;
+        private TabPage tabPageDates;
+        private TabPage tabPageSizes;
+        private TabPage tabPageOptions;
+        private SplitContainer splitContainerTabs;
+        private TabControl tabControl2;
+        private TabPage tabPagePreview;
+        private TabPage tabPageProperties;
+        private ListView listViewProperties;
     }
 }
