@@ -44,9 +44,8 @@ namespace FinderSeeker.UI
             progressSearch = new ToolStripProgressBar();
             labelStats = new ToolStripStatusLabel();
             labelTime = new ToolStripStatusLabel();
-            panelCriteria = new Panel();
             splitContainerTabs = new SplitContainer();
-            tabControl1 = new TabControl();
+            tabControlTop = new TabControl();
             tabPageBasic = new TabPage();
             labelLocation = new Label();
             checkSystem = new CheckBox();
@@ -81,8 +80,9 @@ namespace FinderSeeker.UI
             labelCreatedAfter = new Label();
             labelCreatedBefore = new Label();
             tabPageOptions = new TabPage();
-            numMaxContentMb = new NumericUpDown();
+            groupBoxTextSearch = new GroupBox();
             checkBinary = new CheckBox();
+            numMaxContentMb = new NumericUpDown();
             labelMaxContent = new Label();
             buttonSearch = new Button();
             splitMain = new SplitContainer();
@@ -100,22 +100,21 @@ namespace FinderSeeker.UI
             menuCopyPath = new ToolStripMenuItem();
             menuCopyName = new ToolStripMenuItem();
             menuCopyFolder = new ToolStripMenuItem();
+            tabControlPreview = new TabControl();
+            tabPagePreview = new TabPage();
             previewPanel = new PreviewPanel();
+            tabPageProperties = new TabPage();
+            listViewProperties = new ListView();
             timerUi = new System.Windows.Forms.Timer(components);
             timerPreview = new System.Windows.Forms.Timer(components);
             toolTip = new ToolTip(components);
-            tabControl2 = new TabControl();
-            tabPagePreview = new TabPage();
-            tabPageProperties = new TabPage();
-            listViewProperties = new ListView();
             menuStrip.SuspendLayout();
             statusStrip.SuspendLayout();
-            panelCriteria.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainerTabs).BeginInit();
             splitContainerTabs.Panel1.SuspendLayout();
             splitContainerTabs.Panel2.SuspendLayout();
             splitContainerTabs.SuspendLayout();
-            tabControl1.SuspendLayout();
+            tabControlTop.SuspendLayout();
             tabPageBasic.SuspendLayout();
             tabPageSizes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numMin).BeginInit();
@@ -124,13 +123,14 @@ namespace FinderSeeker.UI
             groupBoxModifiedDate.SuspendLayout();
             groupBoxCreatedDate.SuspendLayout();
             tabPageOptions.SuspendLayout();
+            groupBoxTextSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numMaxContentMb).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitMain).BeginInit();
             splitMain.Panel1.SuspendLayout();
             splitMain.Panel2.SuspendLayout();
             splitMain.SuspendLayout();
             contextMenuResults.SuspendLayout();
-            tabControl2.SuspendLayout();
+            tabControlPreview.SuspendLayout();
             tabPagePreview.SuspendLayout();
             tabPageProperties.SuspendLayout();
             SuspendLayout();
@@ -140,7 +140,7 @@ namespace FinderSeeker.UI
             menuStrip.Items.AddRange(new ToolStripItem[] { menuFile, menuView, menuHelp });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
-            menuStrip.Size = new Size(984, 24);
+            menuStrip.Size = new Size(884, 24);
             menuStrip.TabIndex = 0;
             // 
             // menuFile
@@ -195,23 +195,23 @@ namespace FinderSeeker.UI
             // menuOpenLog
             // 
             menuOpenLog.Name = "menuOpenLog";
-            menuOpenLog.Size = new Size(177, 22);
+            menuOpenLog.Size = new Size(180, 22);
             menuOpenLog.Text = "Open log folder";
             menuOpenLog.Click += menuOpenLog_Click;
             // 
             // menuAbout
             // 
             menuAbout.Name = "menuAbout";
-            menuAbout.Size = new Size(177, 22);
-            menuAbout.Text = "About FinderSeeker";
+            menuAbout.Size = new Size(180, 22);
+            menuAbout.Text = "About";
             menuAbout.Click += menuAbout_Click;
             // 
             // statusStrip
             // 
             statusStrip.Items.AddRange(new ToolStripItem[] { labelState, progressSearch, labelStats, labelTime });
-            statusStrip.Location = new Point(0, 698);
+            statusStrip.Location = new Point(0, 520);
             statusStrip.Name = "statusStrip";
-            statusStrip.Size = new Size(984, 22);
+            statusStrip.Size = new Size(884, 22);
             statusStrip.TabIndex = 3;
             // 
             // labelState
@@ -230,7 +230,7 @@ namespace FinderSeeker.UI
             // labelStats
             // 
             labelStats.Name = "labelStats";
-            labelStats.Size = new Size(969, 17);
+            labelStats.Size = new Size(869, 17);
             labelStats.Spring = true;
             labelStats.TextAlign = ContentAlignment.MiddleLeft;
             // 
@@ -239,46 +239,37 @@ namespace FinderSeeker.UI
             labelTime.Name = "labelTime";
             labelTime.Size = new Size(0, 17);
             // 
-            // panelCriteria
-            // 
-            panelCriteria.Controls.Add(splitContainerTabs);
-            panelCriteria.Dock = DockStyle.Top;
-            panelCriteria.Location = new Point(0, 24);
-            panelCriteria.Name = "panelCriteria";
-            panelCriteria.Size = new Size(984, 216);
-            panelCriteria.TabIndex = 1;
-            // 
             // splitContainerTabs
             // 
-            splitContainerTabs.Dock = DockStyle.Fill;
-            splitContainerTabs.FixedPanel = FixedPanel.Panel1;
-            splitContainerTabs.Location = new Point(0, 0);
+            splitContainerTabs.Dock = DockStyle.Top;
+            splitContainerTabs.FixedPanel = FixedPanel.Panel2;
+            splitContainerTabs.IsSplitterFixed = true;
+            splitContainerTabs.Location = new Point(0, 24);
             splitContainerTabs.Name = "splitContainerTabs";
-            splitContainerTabs.Orientation = Orientation.Horizontal;
             // 
             // splitContainerTabs.Panel1
             // 
-            splitContainerTabs.Panel1.Controls.Add(tabControl1);
+            splitContainerTabs.Panel1.Controls.Add(tabControlTop);
             // 
             // splitContainerTabs.Panel2
             // 
             splitContainerTabs.Panel2.Controls.Add(buttonSearch);
-            splitContainerTabs.Size = new Size(984, 216);
-            splitContainerTabs.SplitterDistance = 163;
+            splitContainerTabs.Size = new Size(884, 146);
+            splitContainerTabs.SplitterDistance = 770;
             splitContainerTabs.TabIndex = 44;
             // 
-            // tabControl1
+            // tabControlTop
             // 
-            tabControl1.Controls.Add(tabPageBasic);
-            tabControl1.Controls.Add(tabPageSizes);
-            tabControl1.Controls.Add(tabPageDates);
-            tabControl1.Controls.Add(tabPageOptions);
-            tabControl1.Dock = DockStyle.Fill;
-            tabControl1.Location = new Point(0, 0);
-            tabControl1.Name = "tabControl1";
-            tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(984, 163);
-            tabControl1.TabIndex = 43;
+            tabControlTop.Controls.Add(tabPageBasic);
+            tabControlTop.Controls.Add(tabPageSizes);
+            tabControlTop.Controls.Add(tabPageDates);
+            tabControlTop.Controls.Add(tabPageOptions);
+            tabControlTop.Dock = DockStyle.Fill;
+            tabControlTop.Location = new Point(0, 0);
+            tabControlTop.Name = "tabControlTop";
+            tabControlTop.SelectedIndex = 0;
+            tabControlTop.Size = new Size(770, 146);
+            tabControlTop.TabIndex = 43;
             // 
             // tabPageBasic
             // 
@@ -299,7 +290,7 @@ namespace FinderSeeker.UI
             tabPageBasic.Location = new Point(4, 24);
             tabPageBasic.Name = "tabPageBasic";
             tabPageBasic.Padding = new Padding(3);
-            tabPageBasic.Size = new Size(976, 135);
+            tabPageBasic.Size = new Size(762, 118);
             tabPageBasic.TabIndex = 0;
             tabPageBasic.Text = "Basic";
             tabPageBasic.UseVisualStyleBackColor = true;
@@ -339,7 +330,7 @@ namespace FinderSeeker.UI
             // 
             checkContentCase.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             checkContentCase.Appearance = Appearance.Button;
-            checkContentCase.Location = new Point(932, 61);
+            checkContentCase.Location = new Point(720, 61);
             checkContentCase.Name = "checkContentCase";
             checkContentCase.Size = new Size(36, 26);
             checkContentCase.TabIndex = 11;
@@ -352,7 +343,7 @@ namespace FinderSeeker.UI
             comboLocation.FormattingEnabled = true;
             comboLocation.Location = new Point(76, 6);
             comboLocation.Name = "comboLocation";
-            comboLocation.Size = new Size(693, 23);
+            comboLocation.Size = new Size(481, 23);
             comboLocation.TabIndex = 1;
             // 
             // comboContent
@@ -361,7 +352,7 @@ namespace FinderSeeker.UI
             comboContent.FormattingEnabled = true;
             comboContent.Location = new Point(76, 64);
             comboContent.Name = "comboContent";
-            comboContent.Size = new Size(693, 23);
+            comboContent.Size = new Size(481, 23);
             comboContent.TabIndex = 9;
             // 
             // comboContentMode
@@ -369,7 +360,7 @@ namespace FinderSeeker.UI
             comboContentMode.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             comboContentMode.DropDownStyle = ComboBoxStyle.DropDownList;
             comboContentMode.FormattingEnabled = true;
-            comboContentMode.Location = new Point(775, 64);
+            comboContentMode.Location = new Point(563, 64);
             comboContentMode.Name = "comboContentMode";
             comboContentMode.Size = new Size(150, 23);
             comboContentMode.TabIndex = 10;
@@ -378,7 +369,7 @@ namespace FinderSeeker.UI
             // 
             checkNameCase.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             checkNameCase.Appearance = Appearance.Button;
-            checkNameCase.Location = new Point(932, 32);
+            checkNameCase.Location = new Point(720, 32);
             checkNameCase.Name = "checkNameCase";
             checkNameCase.Size = new Size(36, 26);
             checkNameCase.TabIndex = 7;
@@ -408,19 +399,19 @@ namespace FinderSeeker.UI
             comboNameMode.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             comboNameMode.DropDownStyle = ComboBoxStyle.DropDownList;
             comboNameMode.FormattingEnabled = true;
-            comboNameMode.Location = new Point(775, 35);
+            comboNameMode.Location = new Point(602, 35);
             comboNameMode.Name = "comboNameMode";
-            comboNameMode.Size = new Size(150, 23);
+            comboNameMode.Size = new Size(111, 23);
             comboNameMode.TabIndex = 6;
             // 
             // buttonBrowse
             // 
             buttonBrowse.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            buttonBrowse.Location = new Point(775, 6);
+            buttonBrowse.Location = new Point(563, 6);
             buttonBrowse.Name = "buttonBrowse";
-            buttonBrowse.Size = new Size(100, 26);
+            buttonBrowse.Size = new Size(33, 26);
             buttonBrowse.TabIndex = 2;
-            buttonBrowse.Text = "Browse...";
+            buttonBrowse.Text = "...";
             buttonBrowse.UseVisualStyleBackColor = true;
             buttonBrowse.Click += buttonBrowse_Click;
             // 
@@ -430,7 +421,7 @@ namespace FinderSeeker.UI
             comboName.FormattingEnabled = true;
             comboName.Location = new Point(76, 35);
             comboName.Name = "comboName";
-            comboName.Size = new Size(693, 23);
+            comboName.Size = new Size(481, 23);
             comboName.TabIndex = 5;
             // 
             // checkSubfolders
@@ -439,7 +430,7 @@ namespace FinderSeeker.UI
             checkSubfolders.AutoSize = true;
             checkSubfolders.Checked = true;
             checkSubfolders.CheckState = CheckState.Checked;
-            checkSubfolders.Location = new Point(881, 10);
+            checkSubfolders.Location = new Point(602, 10);
             checkSubfolders.Name = "checkSubfolders";
             checkSubfolders.Size = new Size(87, 19);
             checkSubfolders.TabIndex = 3;
@@ -457,7 +448,7 @@ namespace FinderSeeker.UI
             tabPageSizes.Location = new Point(4, 24);
             tabPageSizes.Name = "tabPageSizes";
             tabPageSizes.Padding = new Padding(3);
-            tabPageSizes.Size = new Size(976, 135);
+            tabPageSizes.Size = new Size(762, 118);
             tabPageSizes.TabIndex = 2;
             tabPageSizes.Text = "Sizes";
             tabPageSizes.UseVisualStyleBackColor = true;
@@ -527,7 +518,7 @@ namespace FinderSeeker.UI
             tabPageDates.Location = new Point(4, 24);
             tabPageDates.Name = "tabPageDates";
             tabPageDates.Padding = new Padding(3);
-            tabPageDates.Size = new Size(976, 135);
+            tabPageDates.Size = new Size(762, 118);
             tabPageDates.TabIndex = 1;
             tabPageDates.Text = "Dates";
             tabPageDates.UseVisualStyleBackColor = true;
@@ -640,52 +631,62 @@ namespace FinderSeeker.UI
             // 
             // tabPageOptions
             // 
-            tabPageOptions.Controls.Add(numMaxContentMb);
-            tabPageOptions.Controls.Add(checkBinary);
-            tabPageOptions.Controls.Add(labelMaxContent);
+            tabPageOptions.Controls.Add(groupBoxTextSearch);
             tabPageOptions.Location = new Point(4, 24);
             tabPageOptions.Name = "tabPageOptions";
             tabPageOptions.Padding = new Padding(3);
-            tabPageOptions.Size = new Size(976, 135);
+            tabPageOptions.Size = new Size(762, 118);
             tabPageOptions.TabIndex = 3;
             tabPageOptions.Text = "Options";
             tabPageOptions.UseVisualStyleBackColor = true;
             // 
-            // numMaxContentMb
+            // groupBoxTextSearch
             // 
-            numMaxContentMb.Location = new Point(6, 61);
-            numMaxContentMb.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
-            numMaxContentMb.Name = "numMaxContentMb";
-            numMaxContentMb.Size = new Size(80, 23);
-            numMaxContentMb.TabIndex = 23;
-            numMaxContentMb.ThousandsSeparator = true;
+            groupBoxTextSearch.Controls.Add(checkBinary);
+            groupBoxTextSearch.Controls.Add(numMaxContentMb);
+            groupBoxTextSearch.Controls.Add(labelMaxContent);
+            groupBoxTextSearch.Location = new Point(8, 6);
+            groupBoxTextSearch.Name = "groupBoxTextSearch";
+            groupBoxTextSearch.Size = new Size(233, 100);
+            groupBoxTextSearch.TabIndex = 24;
+            groupBoxTextSearch.TabStop = false;
+            groupBoxTextSearch.Text = "Text Search";
             // 
             // checkBinary
             // 
             checkBinary.AutoSize = true;
-            checkBinary.Location = new Point(6, 6);
+            checkBinary.Location = new Point(6, 22);
             checkBinary.Name = "checkBinary";
             checkBinary.Size = new Size(121, 19);
             checkBinary.TabIndex = 21;
             checkBinary.Text = "Search binary files";
             checkBinary.UseVisualStyleBackColor = true;
             // 
+            // numMaxContentMb
+            // 
+            numMaxContentMb.Location = new Point(6, 66);
+            numMaxContentMb.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            numMaxContentMb.Name = "numMaxContentMb";
+            numMaxContentMb.Size = new Size(80, 23);
+            numMaxContentMb.TabIndex = 23;
+            numMaxContentMb.ThousandsSeparator = true;
+            // 
             // labelMaxContent
             // 
             labelMaxContent.AutoSize = true;
-            labelMaxContent.Location = new Point(6, 43);
+            labelMaxContent.Location = new Point(6, 44);
             labelMaxContent.Name = "labelMaxContent";
-            labelMaxContent.Size = new Size(167, 15);
+            labelMaxContent.Size = new Size(150, 15);
             labelMaxContent.TabIndex = 22;
-            labelMaxContent.Text = "Skip text files larger than (MB):";
+            labelMaxContent.Text = "Skip when larger than (MB)";
             // 
             // buttonSearch
             // 
-            buttonSearch.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            buttonSearch.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             buttonSearch.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            buttonSearch.Location = new Point(852, 11);
+            buttonSearch.Location = new Point(6, 105);
             buttonSearch.Name = "buttonSearch";
-            buttonSearch.Size = new Size(120, 32);
+            buttonSearch.Size = new Size(92, 31);
             buttonSearch.TabIndex = 39;
             buttonSearch.Text = "Search";
             buttonSearch.UseVisualStyleBackColor = true;
@@ -695,7 +696,7 @@ namespace FinderSeeker.UI
             // 
             splitMain.Dock = DockStyle.Fill;
             splitMain.FixedPanel = FixedPanel.Panel2;
-            splitMain.Location = new Point(0, 240);
+            splitMain.Location = new Point(0, 170);
             splitMain.Name = "splitMain";
             // 
             // splitMain.Panel1
@@ -704,9 +705,9 @@ namespace FinderSeeker.UI
             // 
             // splitMain.Panel2
             // 
-            splitMain.Panel2.Controls.Add(tabControl2);
-            splitMain.Size = new Size(984, 458);
-            splitMain.SplitterDistance = 554;
+            splitMain.Panel2.Controls.Add(tabControlPreview);
+            splitMain.Size = new Size(884, 350);
+            splitMain.SplitterDistance = 592;
             splitMain.TabIndex = 2;
             // 
             // listResults
@@ -718,7 +719,7 @@ namespace FinderSeeker.UI
             listResults.FullRowSelect = true;
             listResults.Location = new Point(0, 0);
             listResults.Name = "listResults";
-            listResults.Size = new Size(554, 458);
+            listResults.Size = new Size(592, 350);
             listResults.TabIndex = 0;
             listResults.UseCompatibleStateImageBehavior = false;
             listResults.View = View.Details;
@@ -807,14 +808,57 @@ namespace FinderSeeker.UI
             menuCopyFolder.Text = "Copy folder";
             menuCopyFolder.Click += menuCopyFolder_Click;
             // 
+            // tabControlPreview
+            // 
+            tabControlPreview.Controls.Add(tabPagePreview);
+            tabControlPreview.Controls.Add(tabPageProperties);
+            tabControlPreview.Dock = DockStyle.Fill;
+            tabControlPreview.Location = new Point(0, 0);
+            tabControlPreview.Name = "tabControlPreview";
+            tabControlPreview.SelectedIndex = 0;
+            tabControlPreview.Size = new Size(288, 350);
+            tabControlPreview.TabIndex = 1;
+            // 
+            // tabPagePreview
+            // 
+            tabPagePreview.Controls.Add(previewPanel);
+            tabPagePreview.Location = new Point(4, 24);
+            tabPagePreview.Name = "tabPagePreview";
+            tabPagePreview.Padding = new Padding(3);
+            tabPagePreview.Size = new Size(280, 322);
+            tabPagePreview.TabIndex = 0;
+            tabPagePreview.Text = "Preview";
+            tabPagePreview.UseVisualStyleBackColor = true;
+            // 
             // previewPanel
             // 
             previewPanel.Dock = DockStyle.Fill;
             previewPanel.Highlighter = null;
             previewPanel.Location = new Point(3, 3);
             previewPanel.Name = "previewPanel";
-            previewPanel.Size = new Size(412, 424);
+            previewPanel.Size = new Size(274, 316);
             previewPanel.TabIndex = 0;
+            // 
+            // tabPageProperties
+            // 
+            tabPageProperties.Controls.Add(listViewProperties);
+            tabPageProperties.Location = new Point(4, 24);
+            tabPageProperties.Name = "tabPageProperties";
+            tabPageProperties.Padding = new Padding(3);
+            tabPageProperties.Size = new Size(280, 322);
+            tabPageProperties.TabIndex = 1;
+            tabPageProperties.Text = "Properties";
+            tabPageProperties.UseVisualStyleBackColor = true;
+            // 
+            // listViewProperties
+            // 
+            listViewProperties.Dock = DockStyle.Fill;
+            listViewProperties.Location = new Point(3, 3);
+            listViewProperties.Name = "listViewProperties";
+            listViewProperties.Size = new Size(274, 316);
+            listViewProperties.TabIndex = 0;
+            listViewProperties.UseCompatibleStateImageBehavior = false;
+            listViewProperties.View = View.Details;
             // 
             // timerUi
             // 
@@ -831,57 +875,14 @@ namespace FinderSeeker.UI
             toolTip.InitialDelay = 500;
             toolTip.ReshowDelay = 100;
             // 
-            // tabControl2
-            // 
-            tabControl2.Controls.Add(tabPagePreview);
-            tabControl2.Controls.Add(tabPageProperties);
-            tabControl2.Dock = DockStyle.Fill;
-            tabControl2.Location = new Point(0, 0);
-            tabControl2.Name = "tabControl2";
-            tabControl2.SelectedIndex = 0;
-            tabControl2.Size = new Size(426, 458);
-            tabControl2.TabIndex = 1;
-            // 
-            // tabPagePreview
-            // 
-            tabPagePreview.Controls.Add(previewPanel);
-            tabPagePreview.Location = new Point(4, 24);
-            tabPagePreview.Name = "tabPagePreview";
-            tabPagePreview.Padding = new Padding(3);
-            tabPagePreview.Size = new Size(418, 430);
-            tabPagePreview.TabIndex = 0;
-            tabPagePreview.Text = "Preview";
-            tabPagePreview.UseVisualStyleBackColor = true;
-            // 
-            // tabPageProperties
-            // 
-            tabPageProperties.Controls.Add(listViewProperties);
-            tabPageProperties.Location = new Point(4, 24);
-            tabPageProperties.Name = "tabPageProperties";
-            tabPageProperties.Padding = new Padding(3);
-            tabPageProperties.Size = new Size(418, 430);
-            tabPageProperties.TabIndex = 1;
-            tabPageProperties.Text = "Properties";
-            tabPageProperties.UseVisualStyleBackColor = true;
-            // 
-            // listViewProperties
-            // 
-            listViewProperties.Dock = DockStyle.Fill;
-            listViewProperties.Location = new Point(3, 3);
-            listViewProperties.Name = "listViewProperties";
-            listViewProperties.Size = new Size(412, 424);
-            listViewProperties.TabIndex = 0;
-            listViewProperties.UseCompatibleStateImageBehavior = false;
-            listViewProperties.View = View.Details;
-            // 
             // FormMain
             // 
             AcceptButton = buttonSearch;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(984, 720);
+            ClientSize = new Size(884, 542);
             Controls.Add(splitMain);
-            Controls.Add(panelCriteria);
+            Controls.Add(splitContainerTabs);
             Controls.Add(menuStrip);
             Controls.Add(statusStrip);
             KeyPreview = true;
@@ -892,12 +893,11 @@ namespace FinderSeeker.UI
             menuStrip.PerformLayout();
             statusStrip.ResumeLayout(false);
             statusStrip.PerformLayout();
-            panelCriteria.ResumeLayout(false);
             splitContainerTabs.Panel1.ResumeLayout(false);
             splitContainerTabs.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerTabs).EndInit();
             splitContainerTabs.ResumeLayout(false);
-            tabControl1.ResumeLayout(false);
+            tabControlTop.ResumeLayout(false);
             tabPageBasic.ResumeLayout(false);
             tabPageBasic.PerformLayout();
             tabPageSizes.ResumeLayout(false);
@@ -910,14 +910,15 @@ namespace FinderSeeker.UI
             groupBoxCreatedDate.ResumeLayout(false);
             groupBoxCreatedDate.PerformLayout();
             tabPageOptions.ResumeLayout(false);
-            tabPageOptions.PerformLayout();
+            groupBoxTextSearch.ResumeLayout(false);
+            groupBoxTextSearch.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numMaxContentMb).EndInit();
             splitMain.Panel1.ResumeLayout(false);
             splitMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitMain).EndInit();
             splitMain.ResumeLayout(false);
             contextMenuResults.ResumeLayout(false);
-            tabControl2.ResumeLayout(false);
+            tabControlPreview.ResumeLayout(false);
             tabPagePreview.ResumeLayout(false);
             tabPageProperties.ResumeLayout(false);
             ResumeLayout(false);
@@ -941,7 +942,6 @@ namespace FinderSeeker.UI
         private System.Windows.Forms.ToolStripProgressBar progressSearch;
         private System.Windows.Forms.ToolStripStatusLabel labelStats;
         private System.Windows.Forms.ToolStripStatusLabel labelTime;
-        private System.Windows.Forms.Panel panelCriteria;
         private System.Windows.Forms.Label labelLocation;
         private System.Windows.Forms.ComboBox comboLocation;
         private System.Windows.Forms.Button buttonBrowse;
@@ -995,15 +995,16 @@ namespace FinderSeeker.UI
         private System.Windows.Forms.ToolTip toolTip;
         private GroupBox groupBoxCreatedDate;
         private GroupBox groupBoxModifiedDate;
-        private TabControl tabControl1;
+        private TabControl tabControlTop;
         private TabPage tabPageBasic;
         private TabPage tabPageDates;
         private TabPage tabPageSizes;
         private TabPage tabPageOptions;
         private SplitContainer splitContainerTabs;
-        private TabControl tabControl2;
+        private TabControl tabControlPreview;
         private TabPage tabPagePreview;
         private TabPage tabPageProperties;
         private ListView listViewProperties;
+        private GroupBox groupBoxTextSearch;
     }
 }

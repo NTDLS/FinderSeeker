@@ -1,5 +1,6 @@
-using FinderSeeker.Localization;
+using NTDLS.Localization;
 using FinderSeeker.UI;
+using NTDLS.WinFormsHelpers;
 
 namespace FinderSeeker
 {
@@ -17,6 +18,10 @@ namespace FinderSeeker
                     "FinderSeeker", MessageBoxButtons.OK, MessageBoxIcon.Error);
             };
             AppDomain.CurrentDomain.UnhandledException += (_, e) => Log.Error("Unhandled exception on a background thread.", e.ExceptionObject as Exception);
+
+            // Problems the localization package finds go in the log.
+            LocalizationDiagnostics.OnWarning = Log.Warning;
+            LocalizationDiagnostics.OnError = Log.Error;
 
             // The language is the user's choice in the settings file, or else the Windows language.
             Localizer.Default.SetLanguage(AppSettings.Load().Language);

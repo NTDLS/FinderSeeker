@@ -53,9 +53,9 @@ The app follows the Windows light/dark setting (restart it after changing the Wi
 The app uses the Windows display language. To use another, choose **File > Language...**; it applies at once and is remembered
 (the `"Language"` setting, a culture name such as `de` or `pt-BR`; empty follows Windows). Text with no translation is shown in English.
 
-This works the same way as in SQL Script Generator. Translations are in a SQLite file, `FinderSeeker/Translations/Translations.db`,
+The localization engine is the `NTDLS.Localization` project in this repository (a NuGet package, see its README), which also provides `ILocalizer` for passing the localizer to other libraries. Translations are in a SQLite file, `FinderSeeker/Translations/Translations.db`,
 copied next to the program. The table `Translation` has one row for each English phrase and one column for each language; the
-English text is the key. Text that the Windows Forms designer puts on a form is translated automatically when the form is created (`FormLocalizer`), so designer text needs nothing in the code. In code, wrap text for people in `Localize`:
+English text (the `Phrase` column) is the key. Text that the Windows Forms designer puts on a form is translated automatically when the form is created (`FormLocalizer`), so designer text needs nothing in the code. In code, wrap text for people in `Localize`:
 
 ```csharp
 Text = Localize("Search");

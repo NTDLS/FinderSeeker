@@ -1,4 +1,4 @@
-using FinderSeeker.Localization;
+using NTDLS.Localization;
 using System.Globalization;
 
 namespace FinderSeeker.UI

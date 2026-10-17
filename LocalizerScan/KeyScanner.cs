@@ -67,7 +67,7 @@ namespace LocalizerScan
                     wording = false;
                 }
 
-                if (wording && FinderSeeker.Localization.Phrases.IsTranslatable(text))
+                if (wording && NTDLS.Localization.Phrases.IsTranslatable(text))
                 {
                     yield return text;
                 }

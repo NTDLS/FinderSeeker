@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="FinderSeeker.Localization.StaticLocalizer" Static="true" />
+    <Using Include="NTDLS.Localization.StaticLocalizer" Static="true" />
   </ItemGroup>
 
 </Project>

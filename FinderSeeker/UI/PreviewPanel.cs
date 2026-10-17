@@ -1,4 +1,5 @@
 using FinderSeeker.Search;
+using NTDLS.WinFormsHelpers;
 using System.Text;
 
 namespace FinderSeeker.UI

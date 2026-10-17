@@ -1,4 +1,5 @@
 using FinderSeeker.Search;
+using NTDLS.WinFormsHelpers;
 
 namespace FinderSeeker.UI
 {
@@ -31,7 +32,7 @@ namespace FinderSeeker.UI
 
             listViewProperties.SizeChanged += (_, _) => FitPropertyColumns();
             listViewProperties.KeyDown += listViewProperties_KeyDown;
-            tabControl2.SelectedIndexChanged += (_, _) => RefreshDetails();
+            tabControlPreview.SelectedIndexChanged += (_, _) => RefreshDetails();
         }
 
         private void FitPropertyColumns()
@@ -58,7 +59,7 @@ namespace FinderSeeker.UI
         {
             var result = SelectedResult();
 
-            if (tabControl2.SelectedTab == tabPageProperties)
+            if (tabControlPreview.SelectedTab == tabPageProperties)
             {
                 ShowProperties(result);
             }

@@ -1,5 +1,7 @@
-using FinderSeeker.Localization;
 using FinderSeeker.Search;
+using NTDLS.Localization;
+using NTDLS.WinFormsHelpers;
+using NTDLS.WinFormsHelpers.Forms;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -72,7 +74,7 @@ namespace FinderSeeker.UI
             Text = "FinderSeeker";
             checkNameCase.Text = checkContentCase.Text = "Aa";
 
-            Theming.ApplyDarkModeFixups(this);
+            Theming.ApplyDarkMode(this);
         }
 
         #region Events.
@@ -797,10 +799,8 @@ namespace FinderSeeker.UI
 
         private void ShowAbout()
         {
-            var version = typeof(FormMain).Assembly.GetName().Version?.ToString(3);
-            MessageBox.Show(this,
-                $"FinderSeeker {version}\r\n\r\n" + Localize("A fast file and content search for Windows.") + "\r\n\r\nCopyright © NetworkDLS",
-                Localize("About FinderSeeker"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+            using var form = new FormAbout();
+            form.ShowDialog();
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

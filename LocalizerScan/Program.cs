@@ -2,7 +2,7 @@ using Dapper;
 using Microsoft.Data.Sqlite;
 using NTDLS.EmbeddedResource;
 using NTDLS.SqliteDapperWrapper;
-using FinderSeeker.Localization;
+using NTDLS.Localization;
 using System.Text;
 using System.Text.RegularExpressions;
 using VPT.Einkr.Client;
@@ -51,11 +51,63 @@ namespace LocalizerScan
             var translationDatabase = Path.Join(rootPath, "FinderSeeker", "Translations", "Translations.db");
             var concurrency = args.Length > 1 && int.TryParse(args[1], out var requested) && requested > 0 ? requested : DefaultConcurrency;
 
+            EnsureLanguageColumns(translationDatabase);
             ScanSourceFilesAndAddMissingKeys(rootPath, translationDatabase);
             ClearInvalidTranslations(translationDatabase);
             await FillInMissingTranslations(translationDatabase, einkr, escalationEinkr, "English", concurrency);
 
             return 0;
+        }
+
+        /// <summary>
+        /// Each language is a column named by its culture code ("de", "zh-Hans"). A column that still has the older language name
+        /// ("German", "Chinese simplified") is renamed, and a language with no column yet gets one.
+        /// </summary>
+        private static void EnsureLanguageColumns(string translationDatabase)
+        {
+            if (!File.Exists(translationDatabase))
+            {
+                return;
+            }
+
+            using var translationDb = new SqliteManagedInstance(translationDatabase);
+
+            //The key column cannot be called "Id": column names are not case sensitive, and "id" is the code for Indonesian.
+            var keyColumn = translationDb.Query<string>("SELECT name FROM pragma_table_info('Translation') WHERE pk = 1").FirstOrDefault();
+            if (keyColumn != null && keyColumn.Equals("Id", StringComparison.OrdinalIgnoreCase))
+            {
+                translationDb.Execute("ALTER TABLE Translation RENAME COLUMN \"Id\" TO \"TranslationId\"");
+                Console.WriteLine("Renamed the key column \"Id\" to \"TranslationId\".");
+            }
+
+            //The key column holds the English phrase. It used to be called English.
+            var phraseColumns = translationDb.Query<string>("SELECT name FROM pragma_table_info('Translation')").ToList();
+            if (phraseColumns.Contains("English", StringComparer.OrdinalIgnoreCase) && !phraseColumns.Contains("Phrase", StringComparer.OrdinalIgnoreCase))
+            {
+                translationDb.Execute("ALTER TABLE Translation RENAME COLUMN \"English\" TO \"Phrase\"");
+                Console.WriteLine("Renamed the column \"English\" to \"Phrase\".");
+            }
+
+            var columns = new HashSet<string>(translationDb.Query<string>("SELECT name FROM pragma_table_info('Translation')"), StringComparer.OrdinalIgnoreCase);
+
+            foreach (var culture in _supportedCultures.Collection.Where(o => o.Code != "en"))
+            {
+                if (columns.Contains(culture.Code))
+                {
+                    continue;
+                }
+
+                if (columns.Contains(culture.Name))
+                {
+                    translationDb.Execute($"ALTER TABLE Translation RENAME COLUMN \"{culture.Name}\" TO \"{culture.Code}\"");
+                    Console.WriteLine($"Renamed the column \"{culture.Name}\" to \"{culture.Code}\".");
+                }
+                else
+                {
+                    translationDb.Execute($"ALTER TABLE Translation ADD COLUMN \"{culture.Code}\" TEXT");
+                    Console.WriteLine($"Added the column \"{culture.Code}\" ({culture.Name}).");
+                }
+            }
         }
 
         /// <summary>
@@ -104,9 +156,9 @@ namespace LocalizerScan
                 int added = 0;
                 foreach (var key in keysToTranslate)
                 {
-                    if (translationDb.ExecuteScalar<int>("SELECT COUNT(1) FROM Translation WHERE English = @key", new { key }) == 0)
+                    if (translationDb.ExecuteScalar<int>("SELECT COUNT(1) FROM Translation WHERE Phrase = @key", new { key }) == 0)
                     {
-                        translationDb.Execute("INSERT INTO Translation (English) VALUES (@key)", new { key });
+                        translationDb.Execute("INSERT INTO Translation (Phrase) VALUES (@key)", new { key });
                         Console.WriteLine($"Added \"{key}\" to the translation database.");
                         added++;
                     }
@@ -132,10 +184,10 @@ namespace LocalizerScan
 
             foreach (var culture in _supportedCultures.Collection.Where(o => o.Code != "en"))
             {
-                var column = $"\"{culture.Name}\"";
+                var column = $"\"{culture.Code}\"";
 
-                var translations = translationDb.Query<(string English, string Value)>(
-                    $"SELECT English, {column} as Value FROM Translation WHERE {column} IS NOT NULL AND {column} != ''").ToList();
+                var translations = translationDb.Query<(string Phrase, string Value)>(
+                    $"SELECT Phrase, {column} as Value FROM Translation WHERE {column} IS NOT NULL AND {column} != ''").ToList();
 
                 using var transaction = translationDb.BeginTransaction();
 
@@ -145,7 +197,7 @@ namespace LocalizerScan
                     if (problems.Count > 0)
                     {
                         Log(culture.Name, $"Cleared \"{key}\" = \"{value}\": {string.Join("; ", problems)}");
-                        translationDb.Execute($"UPDATE Translation SET {column} = NULL WHERE English = @key", new { key });
+                        translationDb.Execute($"UPDATE Translation SET {column} = NULL WHERE Phrase = @key", new { key });
                         cleared++;
                     }
                 }
@@ -186,14 +238,14 @@ namespace LocalizerScan
             string sourceLanguage, string promptTemplate, CancellationToken cancellationToken)
         {
             var languageName = targetLanguage.Name;
-            var column = $"\"{languageName}\"";
+            var column = $"\"{targetLanguage.Code}\"";
 
             //Only the phrases that have no translation need to be translated.
             List<string> missing;
             lock (_databaseLock)
             {
                 using var translationDb = new SqliteManagedInstance(translationDatabase);
-                missing = translationDb.Query<string>($"SELECT English FROM Translation WHERE {column} IS NULL OR {column} = ''").ToList();
+                missing = translationDb.Query<string>($"SELECT Phrase FROM Translation WHERE {column} IS NULL OR {column} = ''").ToList();
             }
 
             if (missing.Count == 0)
@@ -269,7 +321,7 @@ namespace LocalizerScan
                     foreach (var (key, translation) in translations)
                     {
                         phrases[key] = translation;
-                        translationDb.Execute($"UPDATE Translation SET {column} = @translation WHERE English = @key", new { key, translation });
+                        translationDb.Execute($"UPDATE Translation SET {column} = @translation WHERE Phrase = @key", new { key, translation });
                     }
 
                     transaction.Commit();
