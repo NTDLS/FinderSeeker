@@ -63,6 +63,7 @@ namespace FinderSeeker.UI
             }
 
             listResults.SmallImageList = _icons.Images;
+            SetupProperties();
 
             ApplySettings();
             ApplyLanguage();
@@ -88,7 +89,7 @@ namespace FinderSeeker.UI
         private void timerPreview_Tick(object? sender, EventArgs e)
         {
             timerPreview.Stop();
-            previewPanel.ShowResult(SelectedResult());
+            RefreshDetails();
         }
 
         private void listResults_RetrieveVirtualItem(object? sender, RetrieveVirtualItemEventArgs e) => OnRetrieveItem(sender, e);
@@ -149,7 +150,8 @@ namespace FinderSeeker.UI
             toolTip.SetToolTip(checkBinary, Localize("Also look inside files that do not look like text. They are read as single-byte text."));
 
             UpdateColumnHeaders();
-            previewPanel.ShowResult(SelectedResult());
+            LocalizeProperties();
+            RefreshDetails();
             UpdateSearchButton();
             UpdateStatus();
         }
@@ -449,7 +451,7 @@ namespace FinderSeeker.UI
             _results.Clear();
             listResults.VirtualListSize = 0;
             previewPanel.Highlighter = session.Content;
-            previewPanel.ShowResult(null);
+            RefreshDetails();
 
             _session = session;
             _stopRequested = false;
@@ -763,7 +765,7 @@ namespace FinderSeeker.UI
                 {
                     SetPreviewWidth();
                 }
-                previewPanel.ShowResult(SelectedResult());
+                RefreshDetails();
             }
             else if (!visible && !splitMain.Panel2Collapsed)
             {
