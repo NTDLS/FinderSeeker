@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NTDLS.Localization" Version="1.0.0" />
+    <PackageReference Include="NTDLS.Localization" Version="1.0.1" />
     <PackageReference Include="NTDLS.SqliteDapperWrapper" Version="1.4.5" />
     <PackageReference Include="VPT.Einkr.Client" Version="2.1.0" />
   </ItemGroup>
