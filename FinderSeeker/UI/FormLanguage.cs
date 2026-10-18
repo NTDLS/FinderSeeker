@@ -109,7 +109,8 @@ namespace FinderSeeker.UI
             _list.Location = new Point(12, 49);
             _list.Size = new Size(320, 300);
             _list.IntegralHeight = false;
-            _list.DataSource = choices;
+            //Items rather than DataSource: a data source is not bound until the list is on a form, so the list would still be empty here.
+            _list.Items.AddRange(choices.ToArray<object>());
             _list.SelectedIndex = LanguageChoices.IndexOf(choices, currentLanguage);
             _list.DoubleClick += (_, _) =>
             {

@@ -6,7 +6,6 @@
     <File Path="Installer/_Resources/Uninstall.ico" />
   </Folder>
   <Project Path="FinderSeeker/FinderSeeker.csproj" />
-  <Project Path="LocalizerScan/LocalizerScan.csproj" />
   <Project Path="NTDLS.Localization.Tests/NTDLS.Localization.Tests.csproj" />
   <Project Path="Tests/Tests.csproj" />
 </Solution>
